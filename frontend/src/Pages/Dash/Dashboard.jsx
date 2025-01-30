@@ -1,8 +1,8 @@
-import Sidebar from "./Sidebar";
-import CardsSection from "./CardsSection";
-import WeeklyActivity from "./WeeklyActivity";
-import ExpenseStatistics from "./ExpenseStatistics";
-import BalanceHistory from "./BalanceHistory";
+// import Sidebar from "."
+import CardsSection from "./Card";
+import WeeklyActivity from "./Chart";
+import ExpenseStatistics from "./Expense";
+import BalanceHistory from "./Balance";
 
 export default function Dashboard() {
   return (

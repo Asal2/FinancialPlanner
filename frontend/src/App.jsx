@@ -5,17 +5,23 @@ import {
   UserButton,
 } from "@clerk/clerk-react";
 
-// import Dashboard from ".Pages/Dashboard";
+import { Routes, Route } from "react-router-dom";
+import SignIn from "./components/SignIn";
+import Dashboard from "./Pages/Dash/Dashboard";
 
 export default function App() {
   return (
-    <header>
-      <SignedOut>
-        <SignInButton />
-      </SignedOut>
-      <SignedIn>
-        <UserButton />
-      </SignedIn>
-    </header>
+    <Routes>
+      <Route path="/sign-in" element={<SignIn />} />
+      <Route path="/dashboard" element={<Dashboard />} />
+    </Routes>
+    // <header>
+    //   <SignedOut>
+    //     <SignInButton />
+    //   </SignedOut>
+    //   <SignedIn>
+    //     <UserButton />
+    //   </SignedIn>
+    // </header>
   );
 }
