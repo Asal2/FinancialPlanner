@@ -1,0 +1,23 @@
+import pandas as pd
+import yfinance as yf
+from datetime import datetime, timedelta
+
+end = datetime.now()
+start = end - timedelta(days=1)
+
+tickers = ['aapl', 'amc', 'amzn', 'bb', 'fizz', 'byon', 'gme', 'goog', 'intc', 'koss', 'meta', 'msft', 'nvda', 'pep', 'tmus', 'tsla', 'txn', '^gspc', '^dji', 'oneq', '^ixic', 'qqq', 'spy', 'iwm', 'voo', 'vti', 'vgt', 'vfiax', 'vug', 'fxaix', 'fskax', 'ftihx', 'fxnax', 'bnd' ]
+colnames = []
+adj_close = pd.DataFrame()
+
+for ticker in tickers:
+    df_ticker = yf.download(ticker, start=start, end=end)
+
+    if len(colnames) == 0:
+      adj_close = df_ticker[['Adj Close']].copy()
+
+    else:
+      adj_close = adj_close.join(df_ticker['Adj Close'])
+
+    colnames.append(ticker)
+    adj_close.columns = colnames
+    df_ticker['ticker'] = ticker
