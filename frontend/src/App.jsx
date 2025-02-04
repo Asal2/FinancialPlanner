@@ -1,27 +1,53 @@
+import { Routes, Route, Navigate } from "react-router-dom";
 import {
   SignedIn,
   SignedOut,
-  SignInButton,
+  SignIn,
+  SignUp,
   UserButton,
 } from "@clerk/clerk-react";
-
-import { Routes, Route } from "react-router-dom";
-import SignIn from "./components/SignIn";
+import Home from "./components/Home";
 import Dashboard from "./Pages/Dash/Dashboard";
 
 export default function App() {
   return (
-    <Routes>
-      <Route path="/sign-in" element={<SignIn />} />
-      <Route path="/dashboard" element={<Dashboard />} />
-    </Routes>
-    // <header>
-    //   <SignedOut>
-    //     <SignInButton />
-    //   </SignedOut>
-    //   <SignedIn>
-    //     <UserButton />
-    //   </SignedIn>
-    // </header>
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <Home>
+        <Routes>
+          <Route path="/" element={<Navigate to="/home" />} />
+        </Routes>
+      </Home>
+      {/* <SignedOut>
+        <Routes>
+          <Route
+            path="/sign-in"
+            element={
+              <div className="flex items-center justify-center min-h-screen w-full">
+                <SignIn />
+              </div>
+            }
+          />
+          <Route
+            path="/sign-up"
+            element={
+              <div className="flex items-center justify-center min-h-screen w-full">
+                <SignUp />
+              </div>
+            }
+          />
+          <Route path="*" element={<Navigate to="/sign-in" replace />} />
+        </Routes>
+      </SignedOut>
+
+      <SignedIn>
+        <div className="w-full">
+          <UserButton />
+          <Routes>
+            <Route path="/" element={<Dashboard />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </div>
+      </SignedIn> */}
+    </div>
   );
 }

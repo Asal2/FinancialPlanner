@@ -5,7 +5,7 @@ import {
   BarChart,
   User,
   Wallet,
-  Tool,
+  Wrench,
   Book,
 } from "lucide-react";
 
@@ -20,7 +20,7 @@ const Sidebar = () => {
           { icon: Wallet, label: "Accounts" },
           { icon: CreditCard, label: "Credit Cards" },
           { icon: Book, label: "Loans" },
-          { icon: Tool, label: "Services" },
+          { icon: Wrench, label: "Services" },
           { icon: User, label: "Recommendations" },
           { icon: Settings, label: "Settings" },
         ].map(({ icon: Icon, label }, index) => (

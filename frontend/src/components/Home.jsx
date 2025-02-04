@@ -1,17 +1,11 @@
 import React from "react";
-import { SignedIn, SignedOut } from "@clerk/clerk-react";
 
-function Home() {
+const Home = () => {
   return (
     <div>
-      <SignedIn>
-        <h2>Welcome, you are signed in!</h2>
-      </SignedIn>
-      <SignedOut>
-        <h2>Please sign in to access the app.</h2>
-      </SignedOut>
+      <h1>Welcome to Home Page</h1>
     </div>
   );
-}
+};
 
 export default Home;

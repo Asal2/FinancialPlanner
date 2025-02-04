@@ -3,6 +3,7 @@ import CardsSection from "./Card";
 import WeeklyActivity from "./Chart";
 import ExpenseStatistics from "./Expense";
 import BalanceHistory from "./Balance";
+import Sidebar from "../SideBar";
 
 export default function Dashboard() {
   return (
