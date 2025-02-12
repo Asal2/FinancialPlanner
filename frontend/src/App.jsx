@@ -6,18 +6,13 @@ import {
   SignUp,
   UserButton,
 } from "@clerk/clerk-react";
+// import SignInPage from "./components/SignInPage";
+// import SignUpPage from "./components/SignUpPage";
 import Dashboard from "./Pages/Dash/Dashboard";
-// import Home from "./components/Home.jsx";
+// import InvestmentDashboard from "./Pages/Investment/InvestmentDashboard";
 
-export default function App() {
+function App() {
   return (
-    // <div>
-    //   <Home>
-    //     <Routes>
-    //       <Route path="/home" element={<Navigate to="/dashboard" />} />
-    //     </Routes>
-    //   </Home>
-    // </div>
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <SignedOut>
         <Routes>
@@ -53,3 +48,5 @@ export default function App() {
     </div>
   );
 }
+
+export default App;
