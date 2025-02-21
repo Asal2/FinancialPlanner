@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router-dom"; // If using React Router
+import { Link, useLocation } from "react-router-dom";
 import {
   Home,
   CreditCard,
@@ -12,42 +12,20 @@ import {
 } from "lucide-react";
 
 const menuItems = [
-  {
-    icon: Home,
-    label: "Dashboard",
-    path: "/frontend/src/Pages/Dash/Dashboard.jsx",
-  },
-  {
-    icon: BarChart,
-    label: "Transactions",
-    path: "/frontend/src/Pages/Transcation/Trans.jsx",
-  },
-  {
-    icon: Wallet,
-    label: "Accounts",
-    path: "/frontend/src/Pages/Account/Acc.jsx",
-  },
-  {
-    icon: CircleDollarSign,
-    label: "Investment",
-    path: "/frontend/src/Pages/Investment/InvestmentDashboard.jsx",
-  },
-  {
-    icon: CreditCard,
-    label: "Credit Cards",
-    path: "/frontend/src/Pages/CreditCard",
-  },
-  { icon: Book, label: "Loans", path: "/frontend/src/Pages/Loans" },
-  { icon: Wrench, label: "Services", path: "/frontend/src/Pages/" },
+  { icon: Home, label: "Dashboard", path: "/dashboard" },
+  { icon: BarChart, label: "Transactions", path: "/transactions" },
+  { icon: Wallet, label: "Accounts", path: "/accounts" }, // page not made
+  { icon: CircleDollarSign, label: "Investment", path: "/investment" },
+  { icon: CreditCard, label: "Credit Cards", path: "/credit-cards" }, // page being made
+  { icon: Book, label: "Loans", path: "/loans" },
   { icon: User, label: "Recommendations", path: "/recommendations" },
-  { icon: Settings, label: "Settings", path: "/frontend/src/Pages/Settings" },
 ];
 
 const Sidebar = () => {
-  const location = useLocation(); // Get current path
+  const location = useLocation();
 
   return (
-    <aside className="w-64 min-h-screen bg-gray-100 p-4">
+    <aside className="w-64 min-h-screen bg-white shadow-md p-4">
       <ul className="mt-6 space-y-4">
         {menuItems.map(({ icon: Icon, label, path }) => (
           <li key={path}>

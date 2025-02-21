@@ -6,14 +6,15 @@ import {
   SignUp,
   UserButton,
 } from "@clerk/clerk-react";
-// import SignInPage from "./components/SignInPage";
-// import SignUpPage from "./components/SignUpPage";
+import Home from "./components/Home";
 import Dashboard from "./Pages/Dash/Dashboard";
-// import InvestmentDashboard from "./Pages/Investment/InvestmentDashboard";
+import InvestmentDashboard from "./Pages/Investment/InvestmentDashboard";
+import Transactions from "./Pages/Transcation/TransactionDashboard";
+import Loans from "./Pages/Loans/LoanDashboard";
 
 function App() {
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+    <div className="flex min-h-screen bg-gray-100">
       <SignedOut>
         <Routes>
           <Route
@@ -37,12 +38,22 @@ function App() {
       </SignedOut>
 
       <SignedIn>
-        <div className="w-full">
-          <UserButton />
-          <Routes>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
+        <div className="flex w-full">
+          <div className="flex-1 min-h-screen">
+            {/* User button at top-right */}
+            <div className="flex justify-end p-4 bg-white shadow-md">
+              <UserButton />
+            </div>
+
+            {/* Routes for different pages */}
+            <Routes>
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/investment" element={<InvestmentDashboard />} />
+              <Route path="/transactions" element={<Transactions />} />
+              <Route path="/loans" element={<Loans />} />
+              <Route path="*" element={<Navigate to="/dashboard" replace />} />
+            </Routes>
+          </div>
         </div>
       </SignedIn>
     </div>

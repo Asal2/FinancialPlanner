@@ -1,5 +1,4 @@
 import React from "react";
-
 import Card from "../../components/Card";
 
 const summaryData = [
@@ -10,16 +9,6 @@ const summaryData = [
 
 const SummaryChart = () => {
   return (
-    // <div className="grid grid-cols-3 gap-4">
-    //   {summaryData.map((item, index) => (
-    //     <Card key={index} className="p-4 text-center">
-    //       <div className="text-4xl">{item.icon}</div>
-    //       <h3 className="text-lg font-semibold">{item.title}</h3>
-    //       <p className="text-xl font-bold">{item.value}</p>
-    //     </Card>
-    //   ))}
-    // </div>
-
     <div className="grid grid-cols-3 gap-40">
       {summaryData.map((item, index) => (
         <Card

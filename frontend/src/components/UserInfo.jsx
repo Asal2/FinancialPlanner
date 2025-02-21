@@ -21,6 +21,7 @@ const UserInfo = () => {
 
   return null; // No UI rendering
 
+  //don't need the code below remove in the final version
   // return (
   //   <div>
   //     <h2>User Info</h2>
