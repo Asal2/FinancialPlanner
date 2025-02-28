@@ -1,23 +1,85 @@
+"""
+Benchmark Indices
+GSPC: S&P 500
+DJI: Dow Jones
+IXIC: NASDAQ
+
+Vanguard:
+Mutual Funds:
+VTI: Vanguard Total Stock Market ETF (or VOO: Vanguard S&P 500 ETF)
+VTSNX: Vanguard Total International Stock Index Fund Institutional Shares
+VWO: Vanguard FTSE Emerging Markets ETF
+
+VV: Vanguard Large Cap ETF
+VO: Vanguard Mid Cap ETF
+VB: Vanguard Small Cap ETF
+
+Bonds:
+BND: Vanguard Total Bond Market ETF
+
+Target Retirement Funds (0.08% expense ratio for all):
+vanguard_target_retirement_funds = {
+'VTTVX' : '2025'
+'VTHRX' : '2030',
+'VTTHX' : '2035',
+'VFORX' : '2040',
+'VTIVX' : '2045',
+'VFIFX' : '2050',
+'VFFVX' : '2055',
+'VTTSX' : '2060',
+'VLXVX' : '2065',
+'VSVNX' : '2070',
+}
+
+Fidelity:
+Mutual Funds:
+FZROX: Fidelity ZERO Total Market Index Fund
+FZILX: Fidelity ZERO International Index Fund
+FEMKX: Fidelity Emerging Markets Fund
+
+FNILX: Fidellity ZERO Large Cap Index Fund
+FMSDX: Fideltiy Mid Cap Index Fund
+FSSNX: Fidelity Small Cap Index Fund
+
+Bonds:
+FXNAX: Fidelity® US Bond Index Fund
+
+Target Retirement Funds:
+fidelity_target_retirement_funds = {
+'FQIFX' : '2025',
+'FXIFX' : '2030',
+'FIHFX' : '2035',
+'FBIFX' : '2040',
+'FIOFX' : '2045',
+'FIPFX' : '2050',
+'FDEWX' : '2055',
+'FDKLX' : '2060',
+'FFINX' : '2065',
+'FRBVX' : '2070',
+}
+"""
+
 import pandas as pd
 import yfinance as yf
-from datetime import datetime, timedelta
+import datetime as dt
 
-end = datetime.now()
-start = end - timedelta(days=1)
+start = dt.datetime(2020, 2, 20)
+end = dt.datetime(2025, 2, 20)
 
-tickers = ['aapl', 'amc', 'amzn', 'bb', 'fizz', 'byon', 'gme', 'goog', 'intc', 'koss', 'meta', 'msft', 'nvda', 'pep', 'tmus', 'tsla', 'txn', '^gspc', '^dji', 'oneq', '^ixic', 'qqq', 'spy', 'iwm', 'voo', 'vti', 'vgt', 'vfiax', 'vug', 'fxaix', 'fskax', 'ftihx', 'fxnax', 'bnd' ]
+tickers = ['^gspc', '^dji', '^ixic', FNILX', 'FMSDX', 'FSSNX', 'FXNAX', 'FQIFX', 'FXIFX', 'FIHFX', 'FBIFX', 'FIOFX', 'FIPFX', 'FDEWX', 'FDKLX', 'FFINX', 'FRBVX', 'VTTVX', 'VTHRX', 'VTTHX', 'VFORX', 'VTIVX', 'VFIFX', 'VFFVX', 'VTTSX', 'VLXVX', 'VSVNX', 'BND', 'VV', 'VO', 'VB', 'VTI', 'VTSNX', 'VWO']
 colnames = []
-adj_close = pd.DataFrame()
+benchmark_indices = pd.DataFrame()
 
 for ticker in tickers:
     df_ticker = yf.download(ticker, start=start, end=end)
 
     if len(colnames) == 0:
-      adj_close = df_ticker[['Adj Close']].copy()
+      benchmark_indices = df_ticker[['Close']].copy()
 
     else:
-      adj_close = adj_close.join(df_ticker['Adj Close'])
+      benchmark_indices = benchmark_indices.join(df_ticker['Close'])
 
     colnames.append(ticker)
-    adj_close.columns = colnames
+    benchmark_indices.columns = colnames
     df_ticker['ticker'] = ticker
+
