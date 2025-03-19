@@ -2,12 +2,10 @@ import { Link, useLocation } from "react-router-dom";
 import {
   Home,
   CreditCard,
-  Settings,
   CircleDollarSign,
   BarChart,
   User,
   Wallet,
-  Wrench,
   Book,
 } from "lucide-react";
 
@@ -16,7 +14,7 @@ const menuItems = [
   { icon: BarChart, label: "Transactions", path: "/transactions" },
   { icon: Wallet, label: "Accounts", path: "/accounts" }, // page not made
   { icon: CircleDollarSign, label: "Investment", path: "/investment" },
-  { icon: CreditCard, label: "Credit Cards", path: "/credit-cards" }, // page being made
+  { icon: CreditCard, label: "Credit Cards", path: "/credit-cards" },
   { icon: Book, label: "Loans", path: "/loans" },
   { icon: User, label: "Recommendations", path: "/recommendations" },
 ];

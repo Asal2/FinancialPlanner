@@ -27,12 +27,14 @@ const investments = [
 
 const MyInvestment = () => {
   return (
-    <div className="space-y-4">
-      <h3 className="text-lg font-semibold mb-4">My Investment</h3>
+    <div className="p-4 bg-white shadow-lg rounded-xl">
+      <div>
+        <h3 className="text-lg font-semibold mb-4">My Investment</h3>
+      </div>
       {investments.map((inv, index) => (
         <Card
           key={index}
-          className="p-6 flex justify-between items-center rounded-xl shadow-md">
+          className="p-5 flex justify-between items-center rounded-xl ">
           <div className="flex items-center space-x-4">
             <div
               className="w-16 h-16 flex items-center justify-center rounded-full bg-opacity-20"
