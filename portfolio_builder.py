@@ -30,7 +30,7 @@ def get_user_input():
     investment_amount = 14000
     year_contributions = 7000
     year_salary = 100000
-    risk_tolerance = 3
+    risk_tolerance = 1
     age = 21
     target_retirement_year = 2065
     management_comfort_level = 3
@@ -305,17 +305,20 @@ def HRP(mutual_fund_data, investment_amount):
     # Get exact allocation values
     latest_prices = get_latest_prices(mutual_fund_data)
     da_hrp = DiscreteAllocation(hrp_weights, latest_prices, total_portfolio_value=investment_amount)
-
     allocation, leftover = da_hrp.greedy_portfolio()
-    print("\nDiscrete allocation:", allocation)
-    print("Funds remaining: ${:.2f}".format(leftover))
 
-    labels = list(allocation.keys())
-    sizes = list(allocation.values())
+    indices = list(allocation.keys())
+    amounts = list(allocation.values())
+
+    print("\nWe suggest putting:",)
+    for i in range(len(allocation)):
+        print(f"${amounts[i]} in {indices[i]}")
+
+    print("Funds remaining: ${:.2f}".format(leftover))
 
     # Create pie chart
     plt.figure(figsize=(6, 6))
-    plt.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=140)
+    plt.pie(amounts, labels=indices, autopct='%1.1f%%', startangle=140)
     plt.axis('equal')
     plt.title("Allocation from Hierarchial Risk Parity")
     plt.show()
@@ -338,20 +341,23 @@ def MVO(mutual_fund_data, investment_amount):
     # Get exact allocation values
     latest_prices = get_latest_prices(mutual_fund_data)
     da = DiscreteAllocation(weights, latest_prices, total_portfolio_value=investment_amount)
-
     allocation, leftover = da.greedy_portfolio()
-    print("\nDiscrete allocation:", allocation)
-    print("Funds remaining: ${:.2f}".format(leftover))
 
-    labels = list(allocation.keys())
-    sizes = list(allocation.values())
+    indices = list(allocation.keys())
+    amounts = list(allocation.values())
+
+    print("\nWe suggest putting:",)
+    for i in range(len(allocation)):
+        print(f"${amounts[i]} in {indices[i]}")
+
+    print("Funds remaining: ${:.2f}".format(leftover))
 
     # Create pie chart
     plt.figure(figsize=(6, 6))
-    plt.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=140)
+    plt.pie(amounts, labels=indices, autopct='%1.1f%%', startangle=140)
     plt.axis('equal')
-    plt.title("Allocation from mean variance optimization:")
-    plt.show()    
+    plt.title("Allocation from Hierarchial Risk Parity")
+    plt.show()  
     return
 
 def efficient_semivariance(mutual_fund_data, investment_amount):
@@ -371,17 +377,21 @@ def efficient_semivariance(mutual_fund_data, investment_amount):
     da_sv = DiscreteAllocation(weights, latest_prices, total_portfolio_value=investment_amount)
 
     allocation, leftover = da_sv.greedy_portfolio()
-    print("\nDiscrete allocation:", allocation)
-    print("Funds remaining: ${:.2f}".format(leftover))
 
-    labels = list(allocation.keys())
-    sizes = list(allocation.values())
+    indices = list(allocation.keys())
+    amounts = list(allocation.values())
+
+    print("\nWe suggest putting:",)
+    for i in range(len(allocation)):
+        print(f"${amounts[i]} in {indices[i]}")
+
+    print("Funds remaining: ${:.2f}".format(leftover))
 
     # Create pie chart
     plt.figure(figsize=(6, 6))
-    plt.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=140)
+    plt.pie(amounts, labels=indices, autopct='%1.1f%%', startangle=140)
     plt.axis('equal')
-    plt.title("Allocation from Efficient Semivariance:")
+    plt.title("Allocation from Hierarchial Risk Parity")
     plt.show()
     return
 
@@ -399,19 +409,22 @@ def mCVAR(mutual_fund_data, investment_amount):
     # Discrete allocation
     latest_prices = get_latest_prices(mutual_fund_data)
     da_cvar = DiscreteAllocation(cvar_weights, latest_prices, total_portfolio_value=investment_amount)
-
     allocation, leftover = da_cvar.greedy_portfolio()
-    print("\nDiscrete allocation:", allocation)
-    print("Funds remaining: ${:.2f}".format(leftover))
 
-    labels = list(allocation.keys())
-    sizes = list(allocation.values())
+    indices = list(allocation.keys())
+    amounts = list(allocation.values())
+
+    print("\nWe suggest putting:",)
+    for i in range(len(allocation)):
+        print(f"${amounts[i]} in {indices[i]}")
+
+    print("Funds remaining: ${:.2f}".format(leftover))
 
     # Create pie chart
     plt.figure(figsize=(6, 6))
-    plt.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=140)
+    plt.pie(amounts, labels=indices, autopct='%1.1f%%', startangle=140)
     plt.axis('equal')
-    plt.title("Allocation from Mean Conditional Value At Risk (mCVAR):")
+    plt.title("Allocation from Hierarchial Risk Parity")
     plt.show()
     return
 
@@ -430,19 +443,22 @@ def efficient_cdar(mutual_fund_data, investment_amount):
     # Discrete allocation
     latest_prices = get_latest_prices(mutual_fund_data)
     da_cdar = DiscreteAllocation(weights, latest_prices, total_portfolio_value=investment_amount)
-
     allocation, leftover = da_cdar.greedy_portfolio()
-    print("\nDiscrete allocation:", allocation)
-    print("Funds remaining: ${:.2f}".format(leftover))
 
-    labels = list(allocation.keys())
-    sizes = list(allocation.values())
+    indices = list(allocation.keys())
+    amounts = list(allocation.values())
+
+    print("\nWe suggest putting:",)
+    for i in range(len(allocation)):
+        print(f"${amounts[i]} in {indices[i]}")
+
+    print("Funds remaining: ${:.2f}".format(leftover))
 
     # Create pie chart
     plt.figure(figsize=(6, 6))
-    plt.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=140)
+    plt.pie(amounts, labels=indices, autopct='%1.1f%%', startangle=140)
     plt.axis('equal')
-    plt.title("Allocation from Efficient CDaR:")
+    plt.title("Allocation from Hierarchial Risk Parity")
     plt.show()
     return
 
@@ -462,19 +478,22 @@ def efficient_cvar(mutual_fund_data, investment_amount):
     # Discrete allocation
     latest_prices = get_latest_prices(mutual_fund_data)
     da_cvar = DiscreteAllocation(weights, latest_prices, total_portfolio_value=investment_amount)
-
     allocation, leftover = da_cvar.greedy_portfolio()
-    print("\nDiscrete allocation:", allocation)
-    print("Funds remaining: ${:.2f}".format(leftover))
+    
+    indices = list(allocation.keys())
+    amounts = list(allocation.values())
 
-    labels = list(allocation.keys())
-    sizes = list(allocation.values())
+    print("\nWe suggest putting:",)
+    for i in range(len(allocation)):
+        print(f"${amounts[i]} in {indices[i]}")
+
+    print("Funds remaining: ${:.2f}".format(leftover))
 
     # Create pie chart
     plt.figure(figsize=(6, 6))
-    plt.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=140)
+    plt.pie(amounts, labels=indices, autopct='%1.1f%%', startangle=140)
     plt.axis('equal')
-    plt.title("Allocation from Efficient CVaR:")
+    plt.title("Allocation from Hierarchial Risk Parity")
     plt.show()
     return
 
@@ -487,6 +506,7 @@ def main():
 
     # Choose allocation strategy
     allocation_strategy = get_allocation_strategy(risk_tolerance, management_comfort_level, percentage_of_income, years_until_retirement)
+    print(f"Your suggested allocation strategy is {allocation_strategy}!")
 
     # Collect Historical Price Data 
     mutual_fund_data, benchmark_index_data = get_historical_data(brokerage)
