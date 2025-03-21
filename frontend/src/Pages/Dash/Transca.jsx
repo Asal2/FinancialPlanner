@@ -35,12 +35,24 @@ const TransactionsSection = () => {
       date: "21 January 2021",
       type: "income",
     },
+    {
+      description: "Freelance Payment",
+      amount: "1,200",
+      date: "18 January 2021",
+      type: "income",
+    },
+    {
+      description: "Groceries",
+      amount: "300",
+      date: "15 January 2021",
+      type: "expense",
+    },
   ];
 
   return (
-    <div className="p-5 bg-white shadow-lg rounded-xl">
+    <div className="p-5 bg-white shadow-lg rounded-xl w-80">
       <h3 className="text-lg font-semibold mb-4">Recent Transactions</h3>
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4 max-h-60 overflow-y-auto">
         {transactions.map((txn, index) => (
           <TransactionCard key={index} {...txn} />
         ))}

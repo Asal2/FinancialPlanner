@@ -74,7 +74,7 @@ const RecentTransactions = () => {
       </div>
 
       {/* Transactions Table */}
-      <div className="mt-4 overflow-x-auto">
+      <div className="mt-4 overflow-x-auto max-h-80">
         <table className="w-full text-left">
           <thead className="border-b">
             <tr className="text-gray-500">

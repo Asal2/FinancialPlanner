@@ -63,6 +63,14 @@ const CardsSection = () => {
           color="bg-green-500"
           brand="visa"
         />
+
+        {/* <Card
+          balance="4,320"
+          cardNumber="5521 **** **** 6789"
+          holder="Asal Sharma Dhungana"
+          expiry="11/25"
+          color="bg-blue-500"
+        /> */}
       </div>
     </div>
   );

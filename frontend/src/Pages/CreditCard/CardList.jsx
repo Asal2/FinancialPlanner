@@ -1,97 +1,3 @@
-// import {
-//   Table,
-//   TableBody,
-//   TableCell,
-//   TableContainer,
-//   TableHead,
-//   TableRow,
-//   Paper,
-//   Avatar,
-//   Typography,
-//   Link,
-// } from "@mui/material";
-
-// // Sample card data
-// const creditCards = [
-//   {
-//     id: 1,
-//     logo: "https://upload.wikimedia.org/wikipedia/commons/0/04/Visa.svg", // Example Visa logo
-//     type: "Primary",
-//     bank: "Chase Bank",
-//     last4: "1234",
-//     cardHolder: "John Doe",
-//   },
-//   {
-//     id: 2,
-//     logo: "https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg", // Mastercard logo
-//     type: "Secondary",
-//     bank: "Bank of America",
-//     last4: "5678",
-//     cardHolder: "Jane Smith",
-//   },
-//   {
-//     id: 3,
-//     logo: "https://upload.wikimedia.org/wikipedia/commons/3/30/American_Express_logo.svg", // Amex logo
-//     type: "Primary",
-//     bank: "American Express",
-//     last4: "9876",
-//     cardHolder: "Alex Johnson",
-//   },
-// ];
-
-// const CardList = () => {
-//   return (
-//     <div className="p-4 bg-white shadow-lg rounded-xl">
-//       <div>
-//         <h1 className="text-2xl font-bold">Card List</h1>
-//       </div>
-//       <TableContainer
-//         component={Paper}
-//         sx={{ maxWidth: 900, margin: "auto", mt: 3 }}>
-//         <Table>
-//           {/* Table Header */}
-//           <TableHead>
-//             <TableRow>
-//               <TableCell>Logo</TableCell>
-//               <TableCell>Card Type</TableCell>
-//               <TableCell>Bank</TableCell>
-//               <TableCell>Card Number</TableCell>
-//               <TableCell>Card Holder</TableCell>
-//               <TableCell>Action</TableCell>
-//             </TableRow>
-//           </TableHead>
-
-//           {/* Table Body */}
-//           <TableBody>
-//             {creditCards.map((card) => (
-//               <TableRow key={card.id}>
-//                 <TableCell>
-//                   <Avatar
-//                     src={card.logo}
-//                     alt={`${card.bank} Logo`}
-//                     sx={{ width: 40, height: 40 }}
-//                   />
-//                 </TableCell>
-//                 <TableCell>{card.type}</TableCell>
-//                 <TableCell>{card.bank}</TableCell>
-//                 <TableCell>**** **** **** {card.last4}</TableCell>
-//                 <TableCell>{card.cardHolder}</TableCell>
-//                 <TableCell>
-//                   <Link href={`/card-details/${card.id}`} underline="hover">
-//                     View Details
-//                   </Link>
-//                 </TableCell>
-//               </TableRow>
-//             ))}
-//           </TableBody>
-//         </Table>
-//       </TableContainer>
-//     </div>
-//   );
-// };
-
-// export default CardList;
-
 export default function CardList() {
   const cards = [
     {
@@ -109,7 +15,7 @@ export default function CardList() {
       type: "Secondary",
       owner: "Asal",
       iconColor: "bg-red-100 text-red-600",
-    }, 
+    },
     {
       id: 3,
       bank: "Citi Bank",
