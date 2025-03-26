@@ -1,15 +1,18 @@
 #!/usr/bin/python3
 
+from collections import OrderedDict
 import datetime
 import math
 import sqlite3
 import pandas as pd
 import matplotlib.pyplot as plt
+import numpy as np
 from pypfopt.expected_returns import capm_return, returns_from_prices
 from pypfopt.risk_models import CovarianceShrinkage
 from pypfopt.efficient_frontier import EfficientFrontier
 from pypfopt.discrete_allocation import DiscreteAllocation, get_latest_prices
 from pypfopt import HRPOpt, risk_models, EfficientSemivariance, EfficientCVaR, EfficientCDaR
+from pypfopt.base_optimizer import BaseOptimizer
 
 
 def get_user_input():
@@ -90,7 +93,7 @@ def get_historical_data(brokerage):
 
     Mutual Funds:
     VTI: Vanguard Total Stock Market ETF
-    VTSNX: Vanguard Total International Stock Index Fund Institutional Shares
+    VXUS: Vanguard Total International Stock Index Fund ETF
     VWO: Vanguard FTSE Emerging Markets ETF
 
     VV: Vanguard Large Cap ETF
@@ -104,10 +107,10 @@ def get_historical_data(brokerage):
     VGIT: Vanguard Intermidiate-Term Treasury ETF
     VGLT: Vanguard Long-Term Treasury ETF
 
-    Target Retirement Funds (0.08% expense ratio for all):
+    Target Retirement Funds (0.08% expense ratio, $1,000 minimum investment for all):
     vanguard_target_retirement_funds = {
-    'VTTVX' : '2025'
-    'VTHRX' : '2030',
+    'VTTVX' : '2025' 
+    'VTHRX' : '2030', 
     'VTTHX' : '2035',
     'VFORX' : '2040',
     'VTIVX' : '2045',
@@ -236,6 +239,7 @@ def get_target_date_fund(target_retirement_year, brokerage):
             print(f"At the target retirement year of {target_retirement_year}, your suggested index is {index} in {brokerage}.")
         else:
             print(index) 
+
     return
 
 
@@ -290,23 +294,8 @@ def get_retired_fund(mutual_fund_data, investment_amount, brokerage, age):
     return
 
 
-def HRP(mutual_fund_data, investment_amount):
-
-    # Calculate returns
-    returns = mutual_fund_data.pct_change().dropna()
-
-    # Run optimization algorithm to get weights
-    hrp = HRPOpt(returns)
-    hrp_weights = hrp.optimize()
-
-    hrp.portfolio_performance(verbose=True)
-    #print("\nHierarchial risk parity weights:", dict(hrp_weights))
-
-    # Get exact allocation values
-    latest_prices = get_latest_prices(mutual_fund_data)
-    da_hrp = DiscreteAllocation(hrp_weights, latest_prices, total_portfolio_value=investment_amount)
-    allocation, leftover = da_hrp.greedy_portfolio()
-
+# Display asset allocation in a pie chart
+def display_asset_allocation(allocation, leftover, allocation_type):
     indices = list(allocation.keys())
     amounts = list(allocation.values())
 
@@ -320,14 +309,37 @@ def HRP(mutual_fund_data, investment_amount):
     plt.figure(figsize=(6, 6))
     plt.pie(amounts, labels=indices, autopct='%1.1f%%', startangle=140)
     plt.axis('equal')
-    plt.title("Allocation from Hierarchial Risk Parity")
+    plt.title(f"Allocation from {allocation_type}")
     plt.show()
-    return 
+
+    return
+
+
+def HRP(mutual_fund_data, investment_amount):
+    mu = returns_from_prices(mutual_fund_data)
+    S = CovarianceShrinkage(mutual_fund_data).ledoit_wolf() # Covariance matrix
+
+    # Run optimization algorithm to get weights
+    hrp = HRPOpt(mu, S)
+    hrp.optimize()
+    hrp_weights = hrp.clean_weights()
+
+    hrp.portfolio_performance(verbose=True)
+    #print("\nHierarchial risk parity weights:", hrp_weights)
+
+    # Get exact allocation values
+    latest_prices = get_latest_prices(mutual_fund_data)
+    da_hrp = DiscreteAllocation(hrp_weights, latest_prices, total_portfolio_value=investment_amount)
+    allocation, leftover = da_hrp.greedy_portfolio()
+
+    display_asset_allocation(allocation, leftover, "Hierarchial Risk Parity (HRP) allocation:")
+
+    return hrp_weights
     
 
 def MVO(mutual_fund_data, investment_amount):
-    mu = capm_return(mutual_fund_data)  # Covariance matrix
-    S = CovarianceShrinkage(mutual_fund_data).ledoit_wolf() # Calculated returns
+    mu = capm_return(mutual_fund_data)  # Calculated returns
+    S = CovarianceShrinkage(mutual_fund_data).ledoit_wolf() # Covariance matrix
 
     ef = EfficientFrontier(mu, S)
     weights = ef.max_sharpe()
@@ -335,7 +347,6 @@ def MVO(mutual_fund_data, investment_amount):
     cleaned_weights = ef.clean_weights()
 
     #print("Mean variance optimization weights:", dict(cleaned_weights))
-    #print()
     ef.portfolio_performance(verbose=True)
 
     # Get exact allocation values
@@ -343,22 +354,10 @@ def MVO(mutual_fund_data, investment_amount):
     da = DiscreteAllocation(weights, latest_prices, total_portfolio_value=investment_amount)
     allocation, leftover = da.greedy_portfolio()
 
-    indices = list(allocation.keys())
-    amounts = list(allocation.values())
+    display_asset_allocation(allocation, leftover, 'Mean Variance Optimization (MVO) allocation:')
 
-    print("\nWe suggest putting:",)
-    for i in range(len(allocation)):
-        print(f"${amounts[i]} in {indices[i]}")
+    return cleaned_weights
 
-    print("Funds remaining: ${:.2f}".format(leftover))
-
-    # Create pie chart
-    plt.figure(figsize=(6, 6))
-    plt.pie(amounts, labels=indices, autopct='%1.1f%%', startangle=140)
-    plt.axis('equal')
-    plt.title("Allocation from Hierarchial Risk Parity")
-    plt.show()  
-    return
 
 def efficient_semivariance(mutual_fund_data, investment_amount):
     
@@ -378,22 +377,10 @@ def efficient_semivariance(mutual_fund_data, investment_amount):
 
     allocation, leftover = da_sv.greedy_portfolio()
 
-    indices = list(allocation.keys())
-    amounts = list(allocation.values())
+    display_asset_allocation(allocation, leftover, "Efficient Semivariance allocation:")
 
-    print("\nWe suggest putting:",)
-    for i in range(len(allocation)):
-        print(f"${amounts[i]} in {indices[i]}")
+    return weights
 
-    print("Funds remaining: ${:.2f}".format(leftover))
-
-    # Create pie chart
-    plt.figure(figsize=(6, 6))
-    plt.pie(amounts, labels=indices, autopct='%1.1f%%', startangle=140)
-    plt.axis('equal')
-    plt.title("Allocation from Hierarchial Risk Parity")
-    plt.show()
-    return
 
 def mCVAR(mutual_fund_data, investment_amount):
 
@@ -411,22 +398,10 @@ def mCVAR(mutual_fund_data, investment_amount):
     da_cvar = DiscreteAllocation(cvar_weights, latest_prices, total_portfolio_value=investment_amount)
     allocation, leftover = da_cvar.greedy_portfolio()
 
-    indices = list(allocation.keys())
-    amounts = list(allocation.values())
+    display_asset_allocation(allocation, leftover, "Monte Carlo Value at Risk (mCVAR) allocation:")
 
-    print("\nWe suggest putting:",)
-    for i in range(len(allocation)):
-        print(f"${amounts[i]} in {indices[i]}")
+    return cleaned_weights
 
-    print("Funds remaining: ${:.2f}".format(leftover))
-
-    # Create pie chart
-    plt.figure(figsize=(6, 6))
-    plt.pie(amounts, labels=indices, autopct='%1.1f%%', startangle=140)
-    plt.axis('equal')
-    plt.title("Allocation from Hierarchial Risk Parity")
-    plt.show()
-    return
 
 def efficient_cdar(mutual_fund_data, investment_amount):
     
@@ -445,22 +420,10 @@ def efficient_cdar(mutual_fund_data, investment_amount):
     da_cdar = DiscreteAllocation(weights, latest_prices, total_portfolio_value=investment_amount)
     allocation, leftover = da_cdar.greedy_portfolio()
 
-    indices = list(allocation.keys())
-    amounts = list(allocation.values())
+    display_asset_allocation(allocation, leftover, "Efficeint Conditional Drawdown at Risk (CDaR) allocation:")
 
-    print("\nWe suggest putting:",)
-    for i in range(len(allocation)):
-        print(f"${amounts[i]} in {indices[i]}")
+    return weights
 
-    print("Funds remaining: ${:.2f}".format(leftover))
-
-    # Create pie chart
-    plt.figure(figsize=(6, 6))
-    plt.pie(amounts, labels=indices, autopct='%1.1f%%', startangle=140)
-    plt.axis('equal')
-    plt.title("Allocation from Hierarchial Risk Parity")
-    plt.show()
-    return
 
 def efficient_cvar(mutual_fund_data, investment_amount):
 
@@ -479,22 +442,107 @@ def efficient_cvar(mutual_fund_data, investment_amount):
     latest_prices = get_latest_prices(mutual_fund_data)
     da_cvar = DiscreteAllocation(weights, latest_prices, total_portfolio_value=investment_amount)
     allocation, leftover = da_cvar.greedy_portfolio()
-    
-    indices = list(allocation.keys())
-    amounts = list(allocation.values())
 
-    print("\nWe suggest putting:",)
-    for i in range(len(allocation)):
-        print(f"${amounts[i]} in {indices[i]}")
+    display_asset_allocation(allocation, leftover, "Efficeint Conditional Value at Risk (CVaR) allocation:")
 
-    print("Funds remaining: ${:.2f}".format(leftover))
+    return weights
 
-    # Create pie chart
-    plt.figure(figsize=(6, 6))
-    plt.pie(amounts, labels=indices, autopct='%1.1f%%', startangle=140)
-    plt.axis('equal')
-    plt.title("Allocation from Hierarchial Risk Parity")
+
+# Get the correct index for each asset type in for the right brokerage
+def build_estimated_portfolio(allocation, brokerage, investment_amount):
+
+    # Build an ordered dict with the index of each asset for the given brokerage
+    # In order from top to bottom: US equity, non-US equity, bonds, short term debt
+    portfolio = OrderedDict()
+    if brokerage == "Vanguard":
+        portfolio["VTI"] = allocation[0]
+        portfolio["VXUS"] = allocation[1]
+        portfolio["BND"] = allocation[2]
+        portfolio["VTIP"] = allocation[3]
+    else:
+        portfolio["FZROX"] = allocation[0]
+        portfolio["FZILX"] = allocation[1]
+        portfolio["FXNAX"] = allocation[2]
+        portfolio["FSHBX"] = allocation[3]    
+
+    # Show discrete allocation
+    print("We suggest putting:")
+    print(f"${allocation[0] * investment_amount} in {portfolio[0]}")
+    print(f"${allocation[1] * investment_amount} in {portfolio[1]}")
+    print(f"${allocation[2] * investment_amount} in {portfolio[2]}")
+    print(f"${allocation[3] * investment_amount} in {portfolio[3]}")
+
+    display_asset_allocation(allocation, 0, "Estimated retirement portfolio allocation: ")
+
+    return portfolio
+
+# Getting estimated asset allocation is needed for users who were suggested a target date fund or retired fund strategy
+def get_estimated_asset_allocation(age, brokerage, investment_amount):
+    """
+    Used post-retirement data from Fidelity and target date retirement funds from Vanguard.
+    Found that asset allocation did not change between 20-40 years old (target date retirement 2070-2050)
+    Got accurate asset allocation estimates from a trendline for the rest of the ages (40+)
+    """
+    # Initialize allocation values in percentages
+    # Asset order: US-stocks, bonds, Non-US stocks, short term debt 
+    asset_allocation = [0, 0, 0, 0]
+
+    # If the user is under 40, the asset allocation does not change
+    if age < 40:
+        asset_allocation = [54, 36, 10, 0]
+
+    # If the user is 40 or older, use linear equations to estimate asset allocation
+    else: 
+        US_equity = (-0.976 * age) + 93.6
+        non_US_equity = (-0.63 * age) + 60.9
+        bonds = (1.37 * age) - 42.8
+
+        # No short term debt until over 60 years old
+        if age > 60:
+            short_term_debt = (0.37 * age) - 21.5
+        else:
+            short_term_debt = 0
+        
+        # Put all percentages together
+        asset_allocation = [US_equity, non_US_equity, bonds, short_term_debt]
+
+    # Get the designated index for each asset
+    asset_allocation = build_estimated_portfolio(asset_allocation, brokerage, investment_amount)
+
+    return asset_allocation
+
+
+# Monte Carlo method to simulate potential forecasts of the portfolio and benchmark indices
+def monte_carlo_simulation(mutual_fund_data, benchmark_index_data, weights, investment_amount):
+    simulations = 10
+    days = 100
+
+    # Get mean returns matrix and covariance matrix
+    mean_returns = mutual_fund_data.pct_change().mean()
+    mean_matrix = np.full(shape=(days, len(weights)), fill_value=mean_returns)
+    mean_matrix = mean_matrix.T
+    cov_matrix = mean_returns.cov()
+
+    portfolio_sims = np.full(shape=(days, simulations), fill_value=mean_returns)
+
+    for sim in range(simulations):
+        # sample uncorrelated variables
+        Z = np.random.normal(size=(days, len(weights)))
+
+        # Calculate lower triangle of Cholesky Decomposition
+        L = np.linalg.cholesky(cov_matrix)
+        daily_returns = mean_matrix + np.inner(L, Z)
+
+        # Keep track of each simulation
+        portfolio_sims[:, sim] = np.cumprod(np.inner(weights, daily_returns.T)+ 1) * investment_amount
+
+    # Display the portfolio simulations
+    plt.plot(portfolio_sims)
+    plt.ylabel("Portfolio Value ($)")
+    plt.xlabel("Days")
+    plt.title("Monte Carlo simulation of potential portfolio value over time")
     plt.show()
+
     return
 
 
@@ -513,22 +561,37 @@ def main():
 
     # Get portfolio allocation based on suggested allocation strategy
     if allocation_strategy == 'target date fund':
-        get_target_date_fund(target_retirement_year, brokerage)
+        if (investment_amount < 1000) and (brokerage == "Vanguard"):
+            print("DISCLAIMER: Minimum investment for Vanguard retirement funds are $1,000")
+        weights = get_target_date_fund(target_retirement_year, brokerage)
     elif allocation_strategy == 'retired':
-        get_retired_fund(mutual_fund_data, investment_amount, brokerage, age)
+        if (investment_amount < 1000) and (brokerage == "Vanguard"):
+            print("DISCLAIMER: Minimum investment for Vanguard retirement funds are $1,000")
+        weights = get_retired_fund(mutual_fund_data, investment_amount, brokerage, age)
     elif allocation_strategy == 'HRP':
-        HRP(mutual_fund_data, investment_amount)
+        weights = HRP(mutual_fund_data, investment_amount)
     elif allocation_strategy == 'MVO':
-        MVO(mutual_fund_data, investment_amount)
+        weights = MVO(mutual_fund_data, investment_amount)
     elif allocation_strategy == 'Efficient Semivariance':
-        efficient_semivariance(mutual_fund_data,investment_amount)
+        weights = efficient_semivariance(mutual_fund_data,investment_amount)
     elif allocation_strategy == 'mCVAR':
-        mCVAR(mutual_fund_data, investment_amount)
+        weights = mCVAR(mutual_fund_data, investment_amount)
     elif allocation_strategy == 'Efficient CDaR':
-        efficient_cdar(mutual_fund_data,investment_amount)
+        weights = efficient_cdar(mutual_fund_data,investment_amount)
     else:
-        efficient_cvar(mutual_fund_data,investment_amount)
+        weights = efficient_cvar(mutual_fund_data,investment_amount)
+
+    monte_carlo_simulation(mutual_fund_data, benchmark_index_data, weights, investment_amount)
     return
 
 if __name__ == "__main__":
     main()
+
+"""
+TODO: 
+^ Get weights for target date funds and retired funds (could do estimates based on age)
+Display monte carlo simulations for benchmark indices (could do just S&P 500)
+^ Check weights and if all should be cleaned with strat.clean_weights()
+^ Add disclaimers for minimum investment amounts
+* Replace VTSNX ($5 million min investment) with VXUS ($1 min investment)
+"""
