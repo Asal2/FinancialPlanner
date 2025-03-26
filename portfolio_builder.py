@@ -12,7 +12,6 @@ from pypfopt.risk_models import CovarianceShrinkage
 from pypfopt.efficient_frontier import EfficientFrontier
 from pypfopt.discrete_allocation import DiscreteAllocation, get_latest_prices
 from pypfopt import HRPOpt, risk_models, EfficientSemivariance, EfficientCVaR, EfficientCDaR
-from pypfopt.base_optimizer import BaseOptimizer
 
 
 def get_user_input():
