@@ -512,37 +512,142 @@ def get_estimated_asset_allocation(age, brokerage, investment_amount):
 
 
 # Monte Carlo method to simulate potential forecasts of the portfolio and benchmark indices
-def monte_carlo_simulation(mutual_fund_data, benchmark_index_data, weights, investment_amount):
-    simulations = 10
-    days = 100
+# Correlating benchmarks with portfolio for more realistic results (correlated, move together in reality)
+def portfolio_monte_carlo_simulation(mutual_fund_data, benchmark_index_data, weights, investment_amount):
+    # Set simulation parameters
+    simulations = 50
+    days = 360
 
-    # Get mean returns matrix and covariance matrix
-    mean_returns = mutual_fund_data.pct_change().mean()
-    mean_matrix = np.full(shape=(days, len(weights)), fill_value=mean_returns)
-    mean_matrix = mean_matrix.T
-    cov_matrix = mean_returns.cov()
+    # Combine all indices (portfolio + benchmarks) for correlated simulation
+    all_returns = pd.concat([
+        mutual_fund_data.pct_change(),
+        benchmark_index_data.pct_change()
+    ], axis=1)
+    
+    # Get combined statistics
+    mean_returns = all_returns.mean().values
+    cov_matrix = all_returns.cov().values
+    n_portfolio = len(weights)
+    n_benchmarks = len(benchmark_index_data.columns)
 
-    portfolio_sims = np.full(shape=(days, simulations), fill_value=mean_returns)
+    # Initialize results
+    portfolio_sims = np.zeros((days, simulations))
+    benchmarks_sims = np.zeros((days, simulations, n_benchmarks))
+    weights_array = np.array(list(weights.values()))
 
     for sim in range(simulations):
-        # sample uncorrelated variables
-        Z = np.random.normal(size=(days, len(weights)))
-
-        # Calculate lower triangle of Cholesky Decomposition
+        # Generate correlated random numbers for all assets
+        Z = np.random.normal(size=(days, n_portfolio + n_benchmarks))
         L = np.linalg.cholesky(cov_matrix)
-        daily_returns = mean_matrix + np.inner(L, Z)
+        correlated_returns = mean_returns + (Z @ L.T)
+        
+        # Split into portfolio and benchmark returns
+        portfolio_daily_returns = correlated_returns[:, :n_portfolio]
+        benchmark_daily_returns = correlated_returns[:, n_portfolio:]
+        
+        # Portfolio simulation
+        weighted_returns = portfolio_daily_returns @ weights_array
+        portfolio_sims[:, sim] = investment_amount * np.cumprod(1 + weighted_returns)
+        
+        # Benchmarks simulation
+        benchmarks_sims[:, sim, :] = investment_amount * np.cumprod(1 + benchmark_daily_returns, axis=0)
 
-        # Keep track of each simulation
-        portfolio_sims[:, sim] = np.cumprod(np.inner(weights, daily_returns.T)+ 1) * investment_amount
-
-    # Display the portfolio simulations
+    # Plotting
+    plt.figure(figsize=(14, 6))
+    
+    # Portfolio plot
+    plt.subplot(1, 2, 1)
     plt.plot(portfolio_sims)
-    plt.ylabel("Portfolio Value ($)")
+    plt.title("Portfolio Simulations")
+    plt.ylabel("Value ($)")
     plt.xlabel("Days")
-    plt.title("Monte Carlo simulation of potential portfolio value over time")
+    
+    # Benchmarks plot
+    plt.subplot(1, 2, 2)
+    for i in range(n_benchmarks):
+        plt.plot(benchmarks_sims[:, :, i], label=benchmark_index_data.columns[i])
+    plt.title("Benchmark Simulations")
+    
+    plt.tight_layout()
     plt.show()
 
+    return portfolio_sims, benchmarks_sims
+
+
+# Visualize the 5th, 25th, 50th, 75th, and 95th percentile outcomes to better understand/visualize risk and return of the portfolio, anc relative to the market
+def show_percentiles(portfolio_sims, benchmark_sims, benchmark_index_data, investment_amount):
+    n_benchmarks = benchmark_sims.shape[2]  # Number of benchmarks
+    n_rows = 2 + n_benchmarks  # Total rows needed
+    
+    plt.figure(figsize=(14, 5 * n_rows))  # Adjust figure height dynamically
+    
+    # Portfolio Percentiles
+    plt.subplot(n_rows, 1, 1)
+    portfolio_percentiles = np.percentile(portfolio_sims, [5, 25, 50, 75, 95], axis=1)
+    plt.plot(portfolio_percentiles.T, label=['5th', '25th', 'Median', '75th', '95th'])
+    plt.title(f"Projected Portfolio Value Percentiles (Initial: ${investment_amount:,.0f})")
+    plt.ylabel("Value ($)")
+    plt.legend()
+    plt.grid(True)
+    
+    # Portfolio All Simulations
+    plt.subplot(n_rows, 1, 2)
+    plt.plot(portfolio_sims, alpha=0.1, color='blue')
+    plt.title("All Portfolio Simulations")
+    plt.ylabel("Value ($)")
+    plt.xlabel("Days")
+    
+    # Benchmark Percentiles (one per row)
+    for i in range(n_benchmarks):
+        plt.subplot(n_rows, 1, 3 + i)
+        benchmark_percentiles = np.percentile(benchmark_sims[:, :, i], [5, 25, 50, 75, 95], axis=1)
+        plt.plot(benchmark_percentiles.T, 
+                label=['5th', '25th', 'Median', '75th', '95th'])
+        plt.title(f"Projected {benchmark_index_data.columns[i]} Percentiles")
+        plt.ylabel("Value ($)")
+        plt.xlabel("Days")
+        plt.legend()
+        plt.grid(True)
+    
+    plt.tight_layout()
+    plt.show()
     return
+
+
+def show_combined_percentiles(portfolio_sims, benchmark_sims, benchmark_index_data, investment_amount):
+    plt.figure(figsize=(14, 8))
+    
+    # Calculate portfolio percentiles
+    portfolio_percentiles = np.percentile(portfolio_sims, [5, 25, 50, 75, 95], axis=1)
+    days = portfolio_sims.shape[0]
+    
+    # Plot portfolio percentiles
+    plt.plot(portfolio_percentiles.T, 
+             label=['Portfolio 5th', 'Portfolio 25th', 'Portfolio Median', 
+                    'Portfolio 75th', 'Portfolio 95th'],
+             linestyle='-', linewidth=2)
+    
+    # Calculate and plot benchmark percentiles
+    n_benchmarks = benchmark_sims.shape[2]
+    colors = plt.cm.tab10(np.linspace(0, 1, n_benchmarks))  # Different colors for each benchmark
+    
+    for i in range(n_benchmarks):
+        benchmark_name = benchmark_index_data.columns[i]
+        benchmark_percentiles = np.percentile(benchmark_sims[:, :, i], [50], axis=1)  # Just median
+        
+        plt.plot(benchmark_percentiles.T, 
+                 label=f'{benchmark_name} Median',
+                 color=colors[i], 
+                 linestyle='--', 
+                 linewidth=2)
+    
+    plt.title(f"Projected Portfolio vs Benchmark Percentiles (Initial: ${investment_amount:,.0f})")
+    plt.ylabel("Portfolio Value ($)")
+    plt.xlabel("Days")
+    plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
+    plt.grid(True)
+    plt.tight_layout()
+    plt.show()
 
 
 def main():
@@ -580,8 +685,11 @@ def main():
     else:
         weights = efficient_cvar(mutual_fund_data,investment_amount)
 
-    monte_carlo_simulation(mutual_fund_data, benchmark_index_data, weights, investment_amount)
+    portfolio_sims, benchmark_sims = portfolio_monte_carlo_simulation(mutual_fund_data, benchmark_index_data, weights, investment_amount)
+    show_percentiles(portfolio_sims, benchmark_sims, benchmark_index_data, investment_amount)
+    show_combined_percentiles(portfolio_sims, benchmark_sims, benchmark_index_data, investment_amount)
     return
+
 
 if __name__ == "__main__":
     main()
@@ -589,7 +697,7 @@ if __name__ == "__main__":
 """
 TODO: 
 ^ Get weights for target date funds and retired funds (could do estimates based on age)
-Display monte carlo simulations for benchmark indices (could do just S&P 500)
+^ Display monte carlo simulations for benchmark indices (could do just S&P 500)
 ^ Check weights and if all should be cleaned with strat.clean_weights()
 ^ Add disclaimers for minimum investment amounts
 * Replace VTSNX ($5 million min investment) with VXUS ($1 min investment)
