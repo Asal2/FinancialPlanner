@@ -10,7 +10,7 @@
     "paths": {
       "@/*": ["./*"]
     },
-    "incremental": true,
+    "composite": true,
     "tsBuildInfoFile": "./.tsbuildinfo"
   }
 }
