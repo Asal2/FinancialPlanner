@@ -11,6 +11,7 @@ import InvestmentDashboard from "./Pages/Investment/InvestmentDashboard";
 import CardDashboard from "./Pages/CreditCard/CradDashboard";
 import Transactions from "./Pages/Transcation/TransactionDashboard";
 import Loans from "./Pages/Loans/LoanDashboard";
+import Landing from "./Pages/LandingPage/landing";
 
 function App() {
   return (
@@ -47,6 +48,7 @@ function App() {
 
             {/* Routes for different pages */}
             <Routes>
+              <Route index element={<Landing />} />
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/transactions" element={<Transactions />} />
               <Route path="/investment" element={<InvestmentDashboard />} />

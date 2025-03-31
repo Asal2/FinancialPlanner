@@ -1,10 +1,14 @@
 {
   "dependencies": {
     "@clerk/clerk-react": "^5.25.4",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@mui/material": "^7.0.1",
     "express": "^4.21.2",
     "lucide-react": "^0.484.0",
     "mongoose": "^8.9.6",
-    "react": "^19.0.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
     "react-router-dom": "^7.4.0",
     "recharts": "^2.15.1",
     "vite": "^6.2.3"
