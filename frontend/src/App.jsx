@@ -18,6 +18,7 @@ function App() {
     <div className="flex min-h-screen bg-gray-100">
       <SignedOut>
         <Routes>
+          <Route index element={<Landing />} />
           <Route
             path="/sign-in"
             element={
@@ -48,7 +49,6 @@ function App() {
 
             {/* Routes for different pages */}
             <Routes>
-              <Route index element={<Landing />} />
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/transactions" element={<Transactions />} />
               <Route path="/investment" element={<InvestmentDashboard />} />

@@ -3,6 +3,7 @@
     "@clerk/clerk-react": "^5.25.4",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
+    "@mui/icons-material": "^7.0.1",
     "@mui/material": "^7.0.1",
     "express": "^4.21.2",
     "lucide-react": "^0.484.0",
