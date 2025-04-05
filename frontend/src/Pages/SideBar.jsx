@@ -28,8 +28,8 @@ const Sidebar = () => {
         {menuItems.map(({ icon: Icon, label, path }) => (
           <li key={path}>
             <Link
-              to={path}
-              className={`flex items-center gap-2 p-2 rounded-md ${
+              to={path} 
+              className={`flex items-center gap-2 p-2 rounded-md ${     
                 location.pathname === path
                   ? "text-green-500 font-semibold bg-gray-200"
                   : "text-gray-600 hover:text-green-600"

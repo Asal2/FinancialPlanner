@@ -11,14 +11,23 @@ import InvestmentDashboard from "./Pages/Investment/InvestmentDashboard";
 import CardDashboard from "./Pages/CreditCard/CradDashboard";
 import Transactions from "./Pages/Transcation/TransactionDashboard";
 import Loans from "./Pages/Loans/LoanDashboard";
-import Landing from "./Pages/LandingPage/landing";
+import Landing from "./Pages/LandingPage/Landing";
+import AboutUs from "./Pages/LandingPage/AboutUs";
 
 function App() {
   return (
     <div className="flex min-h-screen bg-gray-100">
       <SignedOut>
         <Routes>
-          <Route index element={<Landing />} />
+          <Route path="/" element={<Landing />} />
+          <Route 
+            path="/aboutUs"
+            element={
+              <div>
+                <AboutUs />
+              </div>
+            }
+          />
           <Route
             path="/sign-in"
             element={
