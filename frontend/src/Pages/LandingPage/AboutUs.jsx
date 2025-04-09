@@ -19,21 +19,23 @@ const AboutUs = () => {
         color: "white",  // Sets text color to white
         padding: 4}}  // Adds padding around the content
       >
-        <Typography variant="h2">
+        <Typography variant="h3" sx={{ fontWeight: 600, textAlign: 'center', mb: 2, fontStyle: 'italic', fontFamily: 'Comic Sans MS, cursive, sans-serif' }}>
           Who are we? 
         </Typography>
 
         {/* Introduction Section */}
-        <Typography variant="h6" sx={{ color: 'text.secondary', mb: 3 }}>
+        <Typography variant="h6" sx={{ mb: 4 }}>
           We are a passionate team focused on creating the best financial analysis tool.
         </Typography>
 
         {/* Team Section */}
-        <Typography variant="h4" sx={{ fontWeight: 600, textAlign: 'center', mb: 4 }}>
+        <Typography variant="h3" sx={{ fontWeight: 600, textAlign: 'center', mb: 2, fontStyle: 'italic', fontFamily: 'Comic Sans MS, cursive, sans-serif' }}>
           Meet Our Team
         </Typography>
 
-        <Grid container spacing={4}>
+          
+        <Grid container spacing={3}>  {/* the Container prop tells MUI this Grid is a parent that will hold grid items. Inside it, 
+        you add <Grid item> elements as children, each representing a cell in a grid */}
           <Grid item xs={12} sm={6} md={4}>
             <Box sx={{ textAlign: 'center' }}>
               <Avatar
@@ -44,10 +46,10 @@ const AboutUs = () => {
               <Typography variant="h6" sx={{ mt: 2 }}>
                 Joe
               </Typography>
-              <Typography variant="body2" color="text.secondary">
+              <Typography variant="body2" >
                 Chief Technology Officer
               </Typography>
-              <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+              <Typography variant="body2"  sx={{ mt: 1 }}>
                 Frontend
               </Typography>
             </Box>
@@ -63,10 +65,10 @@ const AboutUs = () => {
               <Typography variant="h6" sx={{ mt: 2 }}>
                 Asal 
               </Typography>
-              <Typography variant="body2" color="text.secondary">
+              <Typography variant="body2" >
                 Project Manager
               </Typography>
-              <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+              <Typography variant="body2"  sx={{ mt: 1 }}>
                 Frontend
               </Typography>
             </Box>
