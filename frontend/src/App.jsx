@@ -8,6 +8,7 @@ import {
 } from "@clerk/clerk-react";
 import Dashboard from "./Pages/Dash/Dashboard";
 import InvestmentDashboard from "./Pages/Investment/InvestmentDashboard";
+import UserPage from "./Pages/UserPage";
 import CardDashboard from "./Pages/CreditCard/CradDashboard";
 import Transactions from "./Pages/Transcation/TransactionDashboard";
 import Loans from "./Pages/Loans/LoanDashboard";
@@ -50,6 +51,8 @@ function App() {
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/transactions" element={<Transactions />} />
               <Route path="/investment" element={<InvestmentDashboard />} />
+              <Route path="/UserPage" element={<UserPage />} />
+              <Route path="/loans" element={<Loans />} />
               <Route path="/credit-cards" element={<CardDashboard />} />
               <Route path="/loans" element={<Loans />} />
               <Route path="*" element={<Navigate to="/dashboard" replace />} />

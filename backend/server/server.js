@@ -1,68 +1,6 @@
-// const express = require("express");
-// const dotnev = require("dotenv");
-// const cors = require("cors");
-// import { requireAuth } from "@clerk/express"; // Corrected import
-// import { connectDB, User } from "./DbMongo.js";
-
-// dotnev.config();
-// // Connect to MongoDB
-// connectDB();
-// const app = express();
-// app.use(cors());
-// app.use(express.json());
-
-// // Route to save Clerk user details
-// app.post("/api/save-user", requireAuth(), async (req, res) => {
-//   try {
-//     const { userId, emailAddresses, firstName, lastName } = req.auth.user;
-
-//     let user = await User.findOne({ clerkId: userId });
-//     if (!user) {
-//       user = new User({
-//         clerkId: userId,
-//         email: emailAddresses[0]?.emailAddress,
-//         firstName,
-//         lastName,
-//       });
-//       await user.save();
-//     }
-
-//     res.status(200).json({ message: "User saved successfully", user });
-//   } catch (error) {
-//     console.error("Error saving user:", error);
-//     res.status(500).json({ error: "Internal Server Error" });
-//   }
-// });
-
-// // Start the server
-// const PORT = process.env.PORT || 5000;
-// app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-
-// const express = require("express");
-// const mongoose = require("mongoose");
-
-// const app = express();
-// const PORT = process.env.PORT || 3000;
-
-// // MongoDB URI (replace with your actual MongoDB URI)
-// const mongoURI = "mongodb://localhost:27017/mydatabase";
-
-// mongoose
-//   .connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
-//   .then(() => console.log("MongoDB connected"))
-//   .catch((err) => console.log("MongoDB connection error:", err));
-
-// // Simple route
-// app.get("/", (req, res) => {
-//   res.send("Hello, world!");
-// });
-
-// app.listen(PORT, () => {
-//   console.log(`Server running on port ${PORT}`);
-// });
-
 // Import required libraries
 const express = require("express");
+const fs = require("fs");
 const mongoose = require("mongoose");
 const cors = require("cors"); // If you want to handle Cross-Origin Resource Sharing
 const dotenv = require("dotenv"); // For environment variables
@@ -72,11 +10,59 @@ dotenv.config();
 const app = express();
 
 // Use middleware
-app.use(express.json()); // For parsing JSON request bodies
 app.use(cors()); // Enable CORS if necessary
+app.use(express.json()); // For parsing JSON request bodies
 
-// Set the port from environment or default to 5000
-const PORT = process.env.PORT || 5000;
+// Set the port from environment or default to 3000
+const PORT = process.env.PORT || 3001;
+
+app.post("/user-investment", (req, res) => {
+  const formData = req.body; // Get the data from the request body
+  const filePath = "investments.json"; // Path to the JSON file
+
+  // Step 1: Read the existing data from the JSON file
+  fs.readFile(filePath, "utf8", (err, data) => {
+    let investments = [];
+
+    // If there is an error reading the file (e.g., file doesn't exist)
+    if (err) {
+      if (err.code === "ENOENT") {
+        // File doesn't exist, create a new one
+        console.log("File not found, creating a new one...");
+      } else {
+        // Other read errors (e.g., permissions or corrupted file)
+        console.error("Failed to read the file:", err);
+        return res.status(500).send("Failed to read data file");
+      }
+    } else {
+      // If file exists but is empty or malformed, start with an empty array
+      try {
+        // If the file is not empty, parse it
+        if (data.trim() === "") {
+          investments = []; // Handle empty file
+        } else {
+          investments = JSON.parse(data); // Parse the existing data
+        }
+      } catch (parseErr) {
+        console.error("Failed to parse JSON:", parseErr); // Log parsing error
+        return res.status(500).send("Invalid JSON format in data file");
+      }
+    }
+
+    // Step 2: Append the new form data to the array
+    investments.push(formData);
+
+    // Step 3: Write the updated array back to the file
+    fs.writeFile(filePath, JSON.stringify(investments, null, 2), (writeErr) => {
+      if (writeErr) {
+        console.error("Failed to write data:", writeErr); // Log write error
+        return res.status(500).send("Failed to save data");
+      }
+
+      res.status(200).send("Data saved successfully");
+    });
+  });
+});
 
 // MongoDB connection URI (this should be in your .env file for security)
 const mongoURI =
@@ -85,7 +71,7 @@ const mongoURI =
 
 // MongoDB connection
 mongoose
-  .connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect(mongoURI)
   .then(() => console.log("MongoDB connected"))
   .catch((err) => console.error("MongoDB connection error:", err));
 
