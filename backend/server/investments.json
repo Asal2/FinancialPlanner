@@ -1,0 +1,22 @@
+[
+  {
+    "totalInvestment": "10",
+    "yearlyInvestment": "4",
+    "annualSalary": "80000",
+    "riskTolerance": "3",
+    "age": "23",
+    "retirementYear": "65",
+    "portfolioManagement": "1",
+    "investmentPlatform": "Vanguard"
+  },
+  {
+    "totalInvestment": "10",
+    "yearlyInvestment": "8",
+    "annualSalary": "90000",
+    "riskTolerance": "3",
+    "age": "22",
+    "retirementYear": "65",
+    "portfolioManagement": "1",
+    "investmentPlatform": "Vanguard"
+  }
+]
