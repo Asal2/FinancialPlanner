@@ -52,8 +52,11 @@ function App() {
         <div className="flex w-full">
           <div className="flex-1 min-h-screen">
             {/* User button at top-right */}
-            <div className="flex justify-end p-4 bg-white shadow-md">
-              <UserButton />
+            <div className="flex p-4 bg-white shadow-md">
+              <h1 className="text-2xl font-bold text-gray-800">Finance Buddy</h1>
+              <div className="ml-auto">
+                <UserButton />
+              </div>
             </div>
 
             {/* Routes for different pages */}

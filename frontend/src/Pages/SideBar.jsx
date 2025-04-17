@@ -12,11 +12,9 @@ import {
 const menuItems = [
   { icon: Home, label: "Dashboard", path: "/dashboard" },
   { icon: BarChart, label: "Transactions", path: "/transactions" },
-  { icon: Wallet, label: "Accounts", path: "/accounts" }, // page not made
   { icon: CircleDollarSign, label: "Investment", path: "/investment" },
   { icon: CreditCard, label: "Credit Cards", path: "/credit-cards" },
   { icon: Book, label: "Loans", path: "/loans" },
-  { icon: User, label: "Recommendations", path: "/recommendations" },
 ];
 
 const Sidebar = () => {
