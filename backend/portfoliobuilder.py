@@ -28,27 +28,21 @@ def get_user_input():
     NOTE ---------------------------
     ask desired amount by retirement?
     """
-    filepath = "../backend/server/investments.json"
-    try:
-        with open(filepath, 'r') as f:
-            investment = json.load(f)
-        print(investment)
-        
-    except FileNotFoundError:
-        print(f"Error: The file '{f}' was not found.")
-    except json.JSONDecodeError:
-        print(f"Error: The file '{f}' contains invalid JSON.")
-    except Exception as e:
-        print(f"An unexpected error occurred: {e}")
+    filepath = "../backend/investments.json"
+    
+    # try:
+    with open(filepath, 'r') as f:
+        investment = json.load(f)
+    print(investment)
 
-    investment_amount = 100000
-    year_contributions = 7000
-    year_salary = 100000
-    risk_tolerance = 10
-    age = 70
-    target_retirement_year = 2025
-    management_comfort_level = 3
-    brokerage = 'Fidelity'
+    investment_amount = investment["totalInvestment"]
+    year_contributions = investment["yearlyInvestment"]
+    year_salary = investment["annualSalary"]
+    risk_tolerance = investment["riskTolerance"]
+    age = investment["age"]
+    target_retirement_year = investment["retirementYear"]
+    management_comfort_level = investment["portfolioManagement"]
+    brokerage = investment["investmentPlatform"]
 
     current_year = datetime.datetime.today().year
 
@@ -59,6 +53,33 @@ def get_user_input():
     retirement_age = age + years_until_retirement
 
     return investment_amount, risk_tolerance, age, target_retirement_year, management_comfort_level, brokerage, percentage_of_income, years_until_retirement, retirement_age
+
+        
+    # except FileNotFoundError:
+    #     print(f"Error: The file '{f}' was not found.")
+    # except json.JSONDecodeError:
+    #     print(f"Error: The file '{f}' contains invalid JSON.")
+    # except Exception as e:
+    #     print(f"An unexpected error occurred: {e}")
+
+    # investment_amount = 100000
+    # year_contributions = 7000
+    # year_salary = 100000
+    # risk_tolerance = 10
+    # age = 70
+    # target_retirement_year = 2025
+    # management_comfort_level = 3
+    # brokerage = 'Fidelity'
+
+    # current_year = datetime.datetime.today().year
+
+    # # If the user is investing too much of their salary (>20%), warn them that they may be investing too much
+    # percentage_of_income = year_contributions / year_salary 
+
+    # years_until_retirement = max((target_retirement_year - current_year), 0)
+    # retirement_age = age + years_until_retirement
+
+    # return investment_amount, risk_tolerance, age, target_retirement_year, management_comfort_level, brokerage, percentage_of_income, years_until_retirement, retirement_age
 
 
 def get_historical_data(brokerage):
