@@ -1,8 +1,7 @@
 import React from 'react'
 import Navbar from '../../components/Navbar'
-import { AppBar, Box, Button, Typography, useScrollTrigger } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
-//import Lottie from "lottie-react";
 
 const Landing = () => {
   
@@ -11,7 +10,7 @@ const Landing = () => {
       <Navbar />
       <Box
         sx={
-        {height: "100vh",
+        {minHeight: "100vh",
         width: "100vw",
         display: "flex",  // Enables flexbox layout
         flexDirection: "column",  // Arranges children in a column

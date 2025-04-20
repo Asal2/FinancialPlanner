@@ -15,6 +15,7 @@ const menuItems = [
   { icon: CircleDollarSign, label: "Investment", path: "/investment" },
   { icon: CreditCard, label: "Credit Cards", path: "/credit-cards" },
   { icon: Book, label: "Loans", path: "/loans" },
+  { icon: Wallet, label: "User Page", path: "/userpage" }
 ];
 
 const Sidebar = () => {

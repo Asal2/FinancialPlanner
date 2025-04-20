@@ -1,7 +1,6 @@
 import React from 'react'
 import Navbar from '../../components/Navbar'
-import { Box, Typography, useScrollTrigger, Container, Grid, Avatar } from '@mui/material'
-import { DotLottieReact } from '@lottiefiles/dotlottie-react';
+import { Box, Typography, Grid, Avatar } from '@mui/material'
 
 const AboutUs = () => {
   return (
@@ -9,8 +8,7 @@ const AboutUs = () => {
       <Navbar />
       <Box
         sx={
-        {height: "100vh",
-        width: "100vw",
+        {minHeight: "100vh",
         display: "flex",  // Enables flexbox layout
         flexDirection: "column",  // Arranges children in a column
         alignItems: "center",  // Centers content horizontally
@@ -39,15 +37,12 @@ const AboutUs = () => {
           <Grid item xs={12} sm={6} md={4}>
             <Box sx={{ textAlign: 'center' }}>
               <Avatar
-                alt="John Doe"
+                alt="J"
                 src="https://via.placeholder.com/150"
                 sx={{ width: 120, height: 120, margin: '0 auto' }}
               />
               <Typography variant="h6" sx={{ mt: 2 }}>
                 Joe
-              </Typography>
-              <Typography variant="body2" >
-                Chief Technology Officer
               </Typography>
               <Typography variant="body2"  sx={{ mt: 1 }}>
                 Frontend
@@ -58,18 +53,47 @@ const AboutUs = () => {
           <Grid item xs={12} sm={6} md={4}>
             <Box sx={{ textAlign: 'center' }}>
               <Avatar
-                alt="Jane Smith"
+                alt="As"
                 src="https://via.placeholder.com/150"
                 sx={{ width: 120, height: 120, margin: '0 auto' }}
               />
               <Typography variant="h6" sx={{ mt: 2 }}>
                 Asal 
               </Typography>
-              <Typography variant="body2" >
-                Project Manager
-              </Typography>
               <Typography variant="body2"  sx={{ mt: 1 }}>
                 Frontend
+              </Typography>
+            </Box>
+          </Grid>
+
+          <Grid item xs={12} sm={6} md={4}>
+            <Box sx={{ textAlign: 'center' }}>
+              <Avatar
+                alt="Ar"
+                src="https://via.placeholder.com/150"
+                sx={{ width: 120, height: 120, margin: '0 auto' }}
+              />
+              <Typography variant="h6" sx={{ mt: 2 }}>
+                Aryan
+              </Typography>
+              <Typography variant="body2"  sx={{ mt: 1 }}>
+                Backend
+              </Typography>
+            </Box>
+          </Grid>
+
+          <Grid item xs={12} sm={6} md={4}>
+            <Box sx={{ textAlign: 'center' }}>
+              <Avatar
+                alt="E"
+                src="https://via.placeholder.com/150"
+                sx={{ width: 120, height: 120, margin: '0 auto' }}
+              />
+              <Typography variant="h6" sx={{ mt: 2 }}>
+                Asal 
+              </Typography>
+              <Typography variant="body2"  sx={{ mt: 1 }}>
+                Backend
               </Typography>
             </Box>
           </Grid>
@@ -78,10 +102,10 @@ const AboutUs = () => {
         </Grid>
         {/* Our Vision Section */}
         <Box sx={{ mt: 6, textAlign: 'center' }}>
-          <Typography variant="h4" component="h2" sx={{ fontWeight: 600, mb: 3 }}>
+          <Typography variant="h3" sx={{ fontWeight: 600, textAlign: 'center', mb: 2, fontStyle: 'italic', fontFamily: 'Comic Sans MS, cursive, sans-serif' }}>
             Our Vision
           </Typography>
-          <Typography variant="body1" paragraph>
+          <Typography class="text-xl" paragraph>
             Our goal is to democratize financial literacy. We believe that everyone should have access to the tools they
             need to understand their finances and make informed decisions. Through our app, we aim to provide transparency
             and control over personal and business finances, driving smarter financial decisions.

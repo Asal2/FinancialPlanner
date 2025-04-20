@@ -13,6 +13,8 @@ import Transactions from "./Pages/Transcation/TransactionDashboard";
 import Loans from "./Pages/Loans/LoanDashboard";
 import Landing from "./Pages/LandingPage/Landing";
 import AboutUs from "./Pages/LandingPage/AboutUs";
+import InvestmentForm from "./Pages/UserPage";
+import Intro from "./Pages/LandingPage/Intro/Intro";
 
 function App() {
   return (
@@ -20,14 +22,8 @@ function App() {
       <SignedOut>
         <Routes>
           <Route path="/" element={<Landing />} />
-          <Route 
-            path="/aboutUs"
-            element={
-              <div>
-                <AboutUs />
-              </div>
-            }
-          />
+          <Route path="/aboutUs" element={<AboutUs />}/>
+          <Route path="/intro" element={<Intro />} />
           <Route
             path="/sign-in"
             element={
@@ -66,6 +62,7 @@ function App() {
               <Route path="/investment" element={<InvestmentDashboard />} />
               <Route path="/credit-cards" element={<CardDashboard />} />
               <Route path="/loans" element={<Loans />} />
+              <Route path="/userpage" element={<InvestmentForm />} />
               <Route path="*" element={<Navigate to="/dashboard" replace />} />
             </Routes>
           </div>
