@@ -2,6 +2,7 @@ import React from 'react'
 import Navbar from '../../components/Navbar'
 import { Box, Button, Typography } from "@mui/material";
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
+import { Link } from 'react-router-dom';
 
 const Landing = () => {
   
@@ -29,6 +30,8 @@ const Landing = () => {
         <Button
           variant="contained"
           size="large"
+          component={Link}
+          to='/intro'
           sx={{ mt: 5, backgroundColor: "#4CAF50", "&:hover": { backgroundColor: "#388E3C" } }}
         >
           Get Started
