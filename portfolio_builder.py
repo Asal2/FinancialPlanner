@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 
+import json
 from collections import OrderedDict
 import datetime
-import math
 import sqlite3
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -30,14 +30,24 @@ def get_user_input():
     ask desired amount by retirement?
     """
 
-    investment_amount = 10000000
-    year_contributions = 500000
-    year_salary = 1000000
-    risk_tolerance = 6
-    age = 50
-    target_retirement_year = 2035
-    management_comfort_level = 3
-    brokerage = 'Fidelity'
+    filepath = "investments.json"
+    
+    # try:
+    with open(filepath, 'r') as f:
+        investment = json.load(f)
+    print(investment)
+
+    investment = investment[0]
+
+    investment_amount = int(investment["totalInvestment"])
+    year_contributions = int(investment["yearlyInvestment"])
+    year_salary = int(investment["annualSalary"])
+    risk_tolerance = int(investment["riskTolerance"])
+    age = int(investment["age"])
+    target_retirement_year = int(investment["retirementYear"])
+    management_comfort_level = int(investment["portfolioManagement"])
+    brokerage = investment["investmentPlatform"]
+
 
     current_year = datetime.datetime.today().year
 
@@ -586,14 +596,18 @@ def portfolio_monte_carlo_simulation(mutual_fund_data, benchmark_index_data, wei
 def show_percentiles(portfolio_sims, benchmark_sims, benchmark_index_data, investment_amount):
     # Portfolio Percentiles (Standalone Figure)
     plt.figure(figsize=(16, 8))
-    portfolio_percentiles = np.percentile(portfolio_sims, [5, 25, 50, 75, 95], axis=1)
-    plt.plot(portfolio_percentiles.T, linewidth=2)
+    portfolio_percentiles = np.percentile(portfolio_sims, [95, 75, 50, 25, 5], axis=1)
+    lines = plt.plot(portfolio_percentiles.T, linewidth=2)
     plt.title(f"Portfolio Value Percentiles (Initial: ${investment_amount:,.0f})", fontsize=14)
     plt.ylabel("Portfolio Value ($)", fontsize=12)
     plt.xlabel("Trading Days", fontsize=12)
     ax = plt.gca()
     ax.yaxis.set_major_formatter(plt.FuncFormatter(lambda x, loc: "{:,}".format(int(x))))
-    plt.legend(['5th', '25th', 'Median', '75th', '95th'], fontsize=10)
+    colors = ['forestgreen', 'blueviolet', 'steelblue', 'orange', 'red']
+    for line, color in zip(lines, colors):
+        line.set_color(color)
+    
+    plt.legend(['95th', '75th', 'Median', '25th', '5th'], fontsize=10)
     plt.grid(True, alpha=0.3)
     plt.tight_layout()
     plt.show()
@@ -608,22 +622,30 @@ def show_percentiles(portfolio_sims, benchmark_sims, benchmark_index_data, inves
         {'linestyle': '-.'}
     ]
 
-    # Define percentile colors and base styles
-    percentile_styles = {
-        '5th': {'color': 'red', 'alpha': 0.7},
-        '25th': {'color': 'orange', 'alpha': 0.7},
-        'Median': {'color': 'steelblue', 'linewidth': 2},
-        '75th': {'color': 'blueviolet', 'alpha': 0.7},
-        '95th': {'color': 'forestgreen', 'alpha': 0.7}
+    # Define percentile colors
+    percentile_colors = {
+        '5th': 'red',
+        '25th': 'orange',
+        'Median': 'steelblue',
+        '75th': 'blueviolet',
+        '95th': 'forestgreen'
     }
 
+    # Plot order
+    percentiles = ['95th', '75th', 'Median', '25th', '5th']
+    
     for i in range(benchmark_sims.shape[2]):
         benchmark_percentiles = np.percentile(benchmark_sims[:, :, i], [5, 25, 50, 75, 95], axis=1)
-        percentiles = ['5th', '25th', 'Median', '75th', '95th']
         
-        for j, p in enumerate(percentiles):
-            # Combine percentile style with benchmark-specific line style
-            style = {**percentile_styles[p], **benchmark_line_styles[i]}
+        # Plot percentiles
+        for j, p in enumerate(reversed(percentiles)):
+            original_p = ['5th', '25th', 'Median', '75th', '95th'][j]
+            style = {
+                'color': percentile_colors[original_p],
+                'linewidth': 2 if original_p == 'Median' else 1,
+                'alpha': 0.7 if original_p != 'Median' else 1,
+                'linestyle': benchmark_line_styles[i]['linestyle']
+            }
             plt.plot(benchmark_percentiles[j], 
                     label=f"{benchmark_index_data.columns[i]} {p}",
                     **style)
@@ -634,20 +656,24 @@ def show_percentiles(portfolio_sims, benchmark_sims, benchmark_index_data, inves
     plt.gca().yaxis.set_major_formatter(plt.FuncFormatter(lambda x, loc: "{:,}".format(int(x))))
     plt.grid(True, alpha=0.3)
 
-    # Create custom legend to group by benchmark
+    # Create custom legend
     legend_elements = []
+    
     # Add percentile legend items
-    for p, style in percentile_styles.items():
+    for p in percentiles:
+        original_p = {'95th': '95th', '75th': '75th', 'Median': 'Median', 
+                     '25th': '25th', '5th': '5th'}[p]
         legend_elements.append(Line2D([0], [0], 
-                                color=style['color'],
-                                linewidth=style.get('linewidth', 1),
+                                color=percentile_colors[original_p],
+                                linewidth=2 if original_p == 'Median' else 1,
                                 label=p))
+    
     # Add benchmark style legend items
     for i, benchmark in enumerate(benchmark_index_data.columns):
         legend_elements.append(Line2D([0], [0], 
-                                    color='black',
-                                    linestyle=benchmark_line_styles[i]['linestyle'],
-                                    label=f"{benchmark} style"))
+                                color='black',
+                                linestyle=benchmark_line_styles[i]['linestyle'],
+                                label=f"{benchmark} style"))
 
     plt.legend(handles=legend_elements, bbox_to_anchor=(1.05, 1), loc='upper left', fontsize=10)
     plt.tight_layout()
@@ -661,7 +687,7 @@ def show_combined_percentiles(portfolio_sims, benchmark_sims, benchmark_index_da
     plt.figure(figsize=(14, 8))
     
     # Calculate portfolio percentiles
-    portfolio_percentiles = np.percentile(portfolio_sims, [5, 25, 50, 75, 95], axis=1)
+    portfolio_percentiles = np.percentile(portfolio_sims, [95, 75, 50, 25, 5], axis=1)
     
     # Plot portfolio percentiles
     plt.plot(portfolio_percentiles.T, 
@@ -700,6 +726,16 @@ def main():
     # Read user input from frontend 
     # Parse user information
     investment_amount, risk_tolerance, age, target_retirement_year, management_comfort_level, brokerage, percentage_of_income, years_until_retirement = get_user_input()
+
+    # Print user input
+    print("Investment amount: ", investment_amount)
+    print("Risk tolerance: ", risk_tolerance)
+    print("Age: ", age)
+    print("Target retirement year: ", target_retirement_year)
+    print("Management comfort level: ", management_comfort_level)
+    print("Brokerage: ", brokerage)
+    print("percentage_of_income: ", percentage_of_income)
+    print("Years until retirement: ", years_until_retirement)
 
     # Choose allocation strategy
     allocation_strategy = get_allocation_strategy(risk_tolerance, management_comfort_level, percentage_of_income, years_until_retirement)
@@ -742,10 +778,6 @@ if __name__ == "__main__":
 
 """
 TODO: 
-95th percentile 1st, down to 5th last
-Index to index name
 User input to see how far into the future to project
 Include recurring annual investments in simulations?
-test unemployed but not retired
-    vary management level and risk tolerance
 """
