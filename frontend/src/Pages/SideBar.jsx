@@ -13,12 +13,10 @@ import {
 const menuItems = [
   { icon: Home, label: "Dashboard", path: "/dashboard" },
   { icon: BarChart, label: "Transactions", path: "/transactions" },
-  { icon: Wallet, label: "Accounts", path: "/accounts" }, // page not made
   { icon: CircleDollarSign, label: "Investment", path: "/investment" },
   { icon: Cable, label: "Investment Input", path: "/UserPage" },
   { icon: CreditCard, label: "Credit Cards", path: "/credit-cards" },
   { icon: Book, label: "Loans", path: "/loans" },
-  { icon: User, label: "Recommendations", path: "/recommendations" },
 ];
 
 const Sidebar = () => {
@@ -26,7 +24,7 @@ const Sidebar = () => {
 
   return (
     <aside className="w-64 min-h-screen bg-white shadow-md p-4">
-      <ul className="mt-1 space-y-4">
+      <ul className="mt-6 space-y-4">
         {menuItems.map(({ icon: Icon, label, path }) => (
           <li key={path}>
             <Link

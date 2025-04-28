@@ -3,19 +3,20 @@ import pandas as pd
 from io import StringIO
 
 # AWS S3 Configuration
-FILES = [
-    "benchmark_indices_02-2020_02-2025.csv",
-    "fidelity_indices_02-2020_02-2025.csv",
-    "final_sample_data.csv",
-    "vanguard_indices_02-2020_02-2025.csv"
-]
+
+
+import os
+os.environ['AWS_ACCESS_KEY_ID'] = ''
+os.environ['AWS_SECRET_ACCESS_KEY'] = ''
 
 # Initialize S3 client
 s3 = boto3.client('s3')
+BUCKET_NAME = 'financialplannerapp881'
+FILE_KEY = 's3://financialplannerapp881/final_sample_data.csv'
 
-def read_csv_from_s3(bucket_name, file_key):
+def read_csv_from_s3(BUCKET_NAME, file_key):
     """Reads a CSV file from S3 and returns a Pandas DataFrame."""
-    obj = s3.get_object(Bucket=bucket_name, Key=file_key)
+    obj = s3.get_object(Bucket=BUCKET_NAME, Key=file_key)
     csv_content = obj['Body'].read().decode('utf-8')
     return pd.read_csv(StringIO(csv_content))
 
@@ -23,7 +24,7 @@ def read_csv_from_s3(bucket_name, file_key):
 dataframes = {}
 for file in FILES:
     try:
-        df = read_csv_from_s3(BUCKET_NAME, file)
+        df = read_csv_from_s3('financialplannerapp881', file)
         dataframes[file] = df
         print(f"Data from {file}:")
         print(df.head(), "\n")

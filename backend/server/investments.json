@@ -1,12 +1,12 @@
 [
   {
-    "totalInvestment": "1000",
+    "totalInvestment": "200",
     "yearlyInvestment": "50",
-    "annualSalary": "800000",
-    "riskTolerance": "5",
-    "age": "25",
+    "annualSalary": "80000",
+    "riskTolerance": "6",
+    "age": "23",
     "retirementYear": "65",
     "portfolioManagement": "2",
-    "investmentPlatform": "Fidelity"
+    "investmentPlatform": "Vanguard"
   }
 ]

@@ -1,6 +1,6 @@
 import React from "react";
 import MyCard from "./MyCard";
-import Sidebar from "../Sidebar";
+import Sidebar from "../SideBar";
 import MyExpense from "./MyExpense";
 import RecentTransactions from "./RecentTranscation";
 

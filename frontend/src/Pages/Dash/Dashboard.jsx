@@ -4,7 +4,7 @@ import WeeklyActivity from "./Chart";
 import ExpenseStatistics from "./Expense";
 import BalanceHistory from "./Balance";
 import Transca from "./Transca";
-import Sidebar from "../Sidebar";
+import Sidebar from "../SideBar";
 
 import UserInfo from "../../components/UserInfo";
 import { useNavigate } from "react-router-dom";

@@ -11,36 +11,32 @@ const recommendationStocks = [
 
 const Recommendation = () => {
   return (
-    <div>
-      <Card className="p-4">
-        <h3 className="text-lg font-semibold mb-4">Trending Stocks</h3>
-        <table className="w-full text-left">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Price</th>
-              <th>Return</th>
+    <Card className="p-6">
+      <h3 className="text-xl font-bold mb-6">Trending Stocks</h3>
+      <table className="w-full text-left border-collapse">
+        <thead>
+          <tr className="border-b">
+            <th className="py-2 px-4 text-gray-700">Name</th>
+            <th className="py-2 px-4 text-gray-700">Price</th>
+            <th className="py-2 px-4 text-gray-700">Return</th>
+          </tr>
+        </thead>
+        <tbody>
+          {recommendationStocks.map((stock, index) => (
+            <tr key={index} className="border-b last:border-none">
+              <td className="py-3 px-4">{stock.name}</td>
+              <td className="py-3 px-4">{stock.price}</td>
+              <td
+                className={`py-3 px-4 font-medium ${
+                  stock.return.includes("-") ? "text-red-500" : "text-green-500"
+                }`}>
+                {stock.return}
+              </td>
             </tr>
-          </thead>
-          <tbody>
-            {recommendationStocks.map((stock, index) => (
-              <tr key={index}>
-                <td>{stock.name}</td>
-                <td>{stock.price}</td>
-                <td
-                  className={
-                    stock.return.includes("-")
-                      ? "text-red-500"
-                      : "text-green-500"
-                  }>
-                  {stock.return}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </Card>
-    </div>
+          ))}
+        </tbody>
+      </table>
+    </Card>
   );
 };
 

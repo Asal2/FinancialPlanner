@@ -1,10 +1,10 @@
 import React from "react";
 import CardExpense from "./CardExpense";
 import MyCards from "./MyCards";
-import Sidebar from "../Sidebar";
+import Sidebar from "../SideBar";
 import CardList from "./CardList";
 import AddCard from "./AddCard";
-import CreditScore from "./CreditScore";
+// import CreditScore from "./CreditScore";
 
 const CardDashboard = () => {
   return (
@@ -14,7 +14,7 @@ const CardDashboard = () => {
         <div className="flex p-4 space-x-5">
           <MyCards />
           <CardExpense />
-          <CreditScore />
+          {/* <CreditScore /> */}
         </div>
         <div className="flex p-4 space-x-5">
           <AddCard />

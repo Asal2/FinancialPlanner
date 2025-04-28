@@ -1,0 +1,12 @@
+[
+  {
+    "totalInvestment": "1000",
+    "yearlyInvestment": "50",
+    "annualSalary": "800000",
+    "riskTolerance": "5",
+    "age": "25",
+    "retirementYear": "65",
+    "portfolioManagement": "2",
+    "investmentPlatform": "Fidelity"
+  }
+]

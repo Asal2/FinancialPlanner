@@ -1,5 +1,5 @@
 import React from "react";
-import Sidebar from "../Sidebar";
+import Sidebar from "../SideBar";
 import LoanSummary from "./LoanSummary";
 import ActiveLonas from "./ActiveLoans";
 

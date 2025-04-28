@@ -11,25 +11,25 @@ const investment = [
 
 const InvestmentFunds = () => {
   return (
-    <Card className="p-4">
-      <h3 className="text-lg font-semibold mb-4">Investment Funds</h3>
-      <table className="w-full text-left">
+    <Card className="p-6">
+      <h3 className="text-xl font-bold mb-6">Investment Funds</h3>
+      <table className="w-full text-left border-collapse">
         <thead>
-          <tr>
-            <th>Name</th>
-            <th>Price</th>
-            <th>Return</th>
+          <tr className="border-b">
+            <th className="py-2 px-4 text-gray-700">Name</th>
+            <th className="py-2 px-4 text-gray-700">Price</th>
+            <th className="py-2 px-4 text-gray-700">Return</th>
           </tr>
         </thead>
         <tbody>
           {investment.map((fund, index) => (
-            <tr key={index}>
-              <td>{fund.name}</td>
-              <td>{fund.price}</td>
+            <tr key={index} className="border-b last:border-none">
+              <td className="py-3 px-4">{fund.name}</td>
+              <td className="py-3 px-4">{fund.price}</td>
               <td
-                className={
+                className={`py-3 px-4 font-medium ${
                   fund.return.includes("-") ? "text-red-500" : "text-green-500"
-                }>
+                }`}>
                 {fund.return}
               </td>
             </tr>

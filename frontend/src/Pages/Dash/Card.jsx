@@ -58,7 +58,7 @@ const CardsSection = () => {
         <Card
           balance="5,756"
           cardNumber="3778 **** **** 1234"
-          holder="Dipesh Adhikari"
+          holder="Asal Sharma Dhungana"
           expiry="12/26"
           color="bg-green-500"
           brand="visa"

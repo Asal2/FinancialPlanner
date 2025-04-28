@@ -8,6 +8,8 @@ const dotenv = require("dotenv"); // For environment variables
 // Initialize app and configure dotenv
 dotenv.config();
 const app = express();
+const aggregatedAmounts = require("../expense.js");
+console.log("this is aggregatedAmounts: ", aggregatedAmounts);
 
 // Use middleware
 app.use(cors()); // Enable CORS if necessary
@@ -64,16 +66,11 @@ app.post("/user-investment", (req, res) => {
   });
 });
 
-// MongoDB connection URI (this should be in your .env file for security)
-// const mongoURI =
-//   process.env.MONGO_URI ||
-//   "mongodb+srv://aryanjungshah881:<db_password>@financialplannerappdb.q2h5s.mongodb.net/"; // Replace with your URI
-
-// // MongoDB connection
-// mongoose
-//   .connect(mongoURI)
-//   .then(() => console.log("MongoDB connected"))
-//   .catch((err) => console.error("MongoDB connection error:", err));
+//expnse tracking
+app.get("/Api/aggregated-expenses", (req, res) => {
+  console.log("Sending aggregated amounts...");
+  res.json(aggregatedAmounts);
+});
 
 // Define a basic route
 app.get("/", (req, res) => {
@@ -89,7 +86,6 @@ app.get("/api/test", (req, res) => {
 app.use((req, res) => {
   res.status(404).json({ error: "Route not found" });
 });
-
 // Start the server
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

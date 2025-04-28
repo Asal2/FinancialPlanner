@@ -1,4 +1,4 @@
-import Sidebar from "../Sidebar";
+import Sidebar from "../SideBar";
 import SummaryChart from "./SummaryChart";
 import RevenueChart from "./RevenueChart";
 import InvestmentFunds from "./InvestmentFunds";
