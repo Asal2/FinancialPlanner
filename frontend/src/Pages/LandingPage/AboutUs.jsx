@@ -5,8 +5,8 @@ import { Box, Typography, Grid, Avatar, Container, Paper } from '@mui/material';
 const teamMembers = [
   { name: 'Joe', role: 'Frontend', image: 'https://cdn.discordapp.com/attachments/1328360376571527168/1365422841025269811/E5F777FD-A824-40D6-A280-15508FDD382F_1_102_o.jpeg?ex=680fe39d&is=680e921d&hm=9f281ea7a4ea182c35f5d33918e68bf647a5771433e0df7e2d720ef3928d8fc2&' },
   { name: 'Asal', role: 'Frontend', image: 'https://cdn.discordapp.com/attachments/1328360376571527168/1366226742926250074/IMG_1116_Original.jpg?ex=68102d4e&is=680edbce&hm=83c565a81bc9f262e02762194f51033a69f9a4adb498c5112f720911fb3dd9f6&' },
-  { name: 'Aryan', role: 'Backend', image: 'https://via.placeholder.com/150' },
-  { name: 'Ethan', role: 'Backend', image: 'https://via.placeholder.com/150' },
+  { name: 'Aryan', role: 'Backend', image: 'https://cdn.discordapp.com/attachments/1328360376571527168/1366238831057174528/IMG_1553.jpg?ex=68103890&is=680ee710&hm=a259cb28f663ff9e756c7d439638091c3279807e904351053654f370d1072eb8&' },
+  { name: 'Ethan', role: 'Backend', image: 'https://cdn.discordapp.com/attachments/1365426386231365712/1366233439858327653/LinkedIn_pfp.png?ex=6810338b&is=680ee20b&hm=9594bb270a92385b92a388e88b4d54ed1255d98f00c1ca5baca0c7d82aa20e9f&' },
 ];
 
 const AboutUs = () => {
