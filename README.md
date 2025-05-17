@@ -82,14 +82,22 @@ Stay tuned for advanced features like:
 ---
 
 
+## 📸 App Screenshots
 
+### Landing page and Analytics
 
-<img width="535" alt="Screenshot 2025-05-17 at 1 43 07 PM" src="https://github.com/user-attachments/assets/bea425bf-0bc0-4478-b78d-028c676515e7" />
+<table>
+  <tr>
+    <td><img width="535" src="https://github.com/user-attachments/assets/bea425bf-0bc0-4478-b78d-028c676515e7" alt="Dashboard"/></td>
+    <td><img width="535" src="https://github.com/user-attachments/assets/55f35da1-3ff9-4713-b85c-581e047f348b" alt="Analytics"/></td>
+  </tr>
+</table>
 
-<img width="498" height="500" alt="Screenshot 2025-05-17 at 1 51 46 PM" src="https://github.com/user-attachments/assets/89c1b8c2-dc1c-4a36-89f8-473f2e3989b0" />
-<img width="498" height="500" alt="Screenshot 2025-05-17 at 1 52 15 PM" src="https://github.com/user-attachments/assets/065f0370-bf76-4012-98a6-79bc6e7a4d86" />
+### Forms(Signin and login Page Clerk)
 
-<img width="535" alt="Screenshot 2025-05-17 at 1 50 24 PM" src="https://github.com/user-attachments/assets/55f35da1-3ff9-4713-b85c-581e047f348b" />
-
-
-
+<table>
+  <tr>
+    <td><img width="498" height="500" src="https://github.com/user-attachments/assets/89c1b8c2-dc1c-4a36-89f8-473f2e3989b0" alt="Form 1"/></td>
+    <td><img width="498" height="500" src="https://github.com/user-attachments/assets/065f0370-bf76-4012-98a6-79bc6e7a4d86" alt="Form 2"/></td>
+  </tr>
+</table>
