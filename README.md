@@ -80,8 +80,8 @@ Stay tuned for advanced features like:
 
 <table>
   <tr>
-    <td><img width="535" src="https://github.com/user-attachments/assets/bea425bf-0bc0-4478-b78d-028c676515e7" alt="Dashboard"/></td>
-    <td><img width="535" src="https://github.com/user-attachments/assets/55f35da1-3ff9-4713-b85c-581e047f348b" alt="Analytics"/></td>
+    <td><img width="535" height="500" src="https://github.com/user-attachments/assets/bea425bf-0bc0-4478-b78d-028c676515e7" alt="Dashboard"/></td>
+    <td><img width="535" height="500" src="https://github.com/user-attachments/assets/55f35da1-3ff9-4713-b85c-581e047f348b" alt="Analytics"/></td>
   </tr>
 </table>
 
