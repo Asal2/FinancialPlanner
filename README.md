@@ -37,19 +37,33 @@ In addition, the application incorporates advanced analytics to track and interp
 ## 🔋 Features
 
 ✅ **Authentication** – Secure login via email/password or OAuth (Google, GitHub) using Clerk
+
 ✅ **Home Page** – Display homepage featuring Signin page
+
 ✅ **Login and SignUp page** – Landing page that leads to login with email and password or social login, such as Google and GitHub. Comes with password reset option
+
 ✅ **Dashboard Page** – Displays personal and financial information such as balance, income, expenses, and savings
+
 ✅ **Profile Management** – Customizable user profiles
+
 ✅ **User input for personal informationn** – User provides information for banking information and portfolio recommendation
+
 ✅ **Recent transactions** – List all recent transactions with details (description, ID, type, card, date, amount) and tab navigation for filtering (All Transactions, Income, Expense)
+
 ✅ **Show the distribution of spending categories** – Color-code transaction amounts (green for positive, red for negative)
+
 ✅ **Recommend a portfolio to users based on their profile** – Taking input such as retirement year, salary, investment amount, and risk tolerance to recommend a portfolio that matches the desires of the user
+
 ✅ **Shows portfolio simulations to see how investments might perform over time** – Visualize how the value of one’s given portfolio could change over time
+
 ✅ **Blazing Performance** – Fast page loads and transitions
+
 ✅ **Benchmark indices simulations** – Simulate how indices that encapsulate the U.S. market could change over time
+
 ✅ **Middleware & API Routes** – Robust backend logic
+
 ✅ **Form Handling** – React Hook Form 
+
 ✅ …and much more!
 
 ---
