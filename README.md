@@ -1,9 +1,5 @@
 # 🧵 Full stack Financial Planner
 
-Build a production-ready full stack Threads clone using **Next.js 14+**, powered by modern technologies and inspired by a Figma UI redesign. This project is developed alongside a step-by-step tutorial on [JavaScript Mastery’s YouTube channel](https://www.youtube.com/@javascriptmastery), perfect for visual learners and aspiring developers.
-
-> Join the JSM community with over **27K+** members on Discord!
-
 ---
 
 ## 📋 Table of Contents
