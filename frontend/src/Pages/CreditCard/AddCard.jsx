@@ -1,20 +1,31 @@
-import { useState } from "react";
+//
+import { useForm } from "react-hook-form";
 
 export default function CardForm() {
-  const [cardType, setCardType] = useState("credit");
-  const [cardName, setCardName] = useState("");
-  const [cardNumber, setCardNumber] = useState("");
-  const [expirationDate, setExpirationDate] = useState("");
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      cardType: "credit",
+    },
+  });
+
+  const onSubmit = (data) => {
+    console.log("Form Data:", data);
+  };
 
   return (
     <div className="p-6 bg-gray-50 h-150 flex justify-center">
-      <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-lg">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="bg-white p-6 rounded-lg shadow-md w-full max-w-lg">
         <h2 className="text-2xl font-bold text-gray-800 mb-3">Add New Card</h2>
         <p className="text-gray-500 mb-4">
           Credit Card generally means a plastic card issued by Scheduled
-          Commercial Banks assigned to a Cardholder, with a credit limit, that
-          can be used to purchase goods and services on credit or obtain cash
-          advances.
+          Commercial Banks assigned to a Cardholder...
         </p>
 
         {/* Radio Buttons */}
@@ -24,10 +35,8 @@ export default function CardForm() {
             <label className="flex items-center gap-2">
               <input
                 type="radio"
-                name="cardType"
                 value="credit"
-                checked={cardType === "credit"}
-                onChange={() => setCardType("credit")}
+                {...register("cardType")}
                 className="accent-blue-600"
               />
               Credit Card
@@ -35,10 +44,8 @@ export default function CardForm() {
             <label className="flex items-center gap-2">
               <input
                 type="radio"
-                name="cardType"
                 value="debit"
-                checked={cardType === "debit"}
-                onChange={() => setCardType("debit")}
+                {...register("cardType")}
                 className="accent-blue-600"
               />
               Debit Card
@@ -52,21 +59,27 @@ export default function CardForm() {
             <label className="block text-gray-600 mb-1">Name On Card</label>
             <input
               type="text"
-              value={cardName}
-              onChange={(e) => setCardName(e.target.value)}
               placeholder="Card Name"
+              {...register("cardName", { required: "Name is required" })}
               className="w-full p-3 border rounded-lg text-gray-500 focus:outline-blue-600"
             />
+            {errors.cardName && (
+              <p className="text-red-500 text-sm">{errors.cardName.message}</p>
+            )}
           </div>
           <div>
             <label className="block text-gray-600 mb-1">Expiration Date</label>
             <input
               type="text"
-              value={expirationDate}
-              onChange={(e) => setExpirationDate(e.target.value)}
               placeholder="DD MM YYYY"
+              {...register("expirationDate", { required: "Date is required" })}
               className="w-full p-3 border rounded-lg text-gray-500 focus:outline-blue-600"
             />
+            {errors.expirationDate && (
+              <p className="text-red-500 text-sm">
+                {errors.expirationDate.message}
+              </p>
+            )}
           </div>
         </div>
 
@@ -74,18 +87,27 @@ export default function CardForm() {
           <label className="block text-gray-600 mb-1">Card Number</label>
           <input
             type="text"
-            value={cardNumber}
-            onChange={(e) => setCardNumber(e.target.value)}
             placeholder="**** **** **** ****"
+            {...register("cardNumber", {
+              required: "Card number is required",
+              pattern: {
+                value: /^\d{4} \d{4} \d{4} \d{4}$/,
+                message: "Enter card number in format: 1234 5678 9012 3456",
+              },
+            })}
             className="w-full p-3 border rounded-lg text-gray-500 focus:outline-blue-600"
           />
+          {errors.cardNumber && (
+            <p className="text-red-500 text-sm">{errors.cardNumber.message}</p>
+          )}
         </div>
 
-        {/* Submit Button */}
-        <button className="w-full mt-6 bg-blue-600 text-white p-3 rounded-lg font-semibold hover:bg-blue-700">
+        <button
+          type="submit"
+          className="w-full mt-6 bg-blue-600 text-white p-3 rounded-lg font-semibold hover:bg-blue-700">
           Add Card
         </button>
-      </div>
+      </form>
     </div>
   );
 }
