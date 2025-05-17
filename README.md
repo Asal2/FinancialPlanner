@@ -13,7 +13,7 @@
 
 ## 🤖 Introduction
 
-Finance Buddy is an innovative web application designed to give users a thorough understanding of their financial situation. It simplifies financial management by tracking income, expenses, and remaining spending capacity while providing tools for users to effectively plan their budgets and long-term financial goals.
+Finance Planner is an innovative web application designed to give users a thorough understanding of their financial situation. It simplifies financial management by tracking income, expenses, and remaining spending capacity while providing tools for users to effectively plan their budgets and long-term financial goals.
 
 In addition, the application incorporates advanced analytics to track and interpret stock market trends. It offers personalized suggestions and visually rich representations of stock market data, enabling users to make informed investment decisions. With the possibility of future integration into a mobile application, Finance Buddy is a versatile solution for personal finance and investment planning, combining ease of use with powerful information
 
